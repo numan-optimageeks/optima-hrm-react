@@ -12,7 +12,7 @@ export interface ILogin {
 
 export const LoginInitialValues = (): ILogin => {
   return {
-    email: "",
-    password: "",
+    email: "admin@site.com",
+    password: "pass2word",
   };
 };

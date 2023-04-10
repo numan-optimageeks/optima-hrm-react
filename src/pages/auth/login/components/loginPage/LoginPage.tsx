@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { FormikHelpers, useFormik } from "formik";
 
-import classes from "./LoginPage.module.scss";
 import {
   ILogin,
   LoginInitialValues,
@@ -16,8 +21,10 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import { useDispatch } from "react-redux";
 import { updateToken } from "src/store/features/Auth";
 import { useNavigate } from "react-router";
+import { StyledBox, StyledLabel, StyledTagline } from "./LoginPage.style";
 
 const LoginPage = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -78,62 +85,56 @@ const LoginPage = () => {
     );
   };
   return (
-    <Box
-      className={classes.container}
-      component="form"
-      onSubmit={handleSubmit}
-      autoComplete="off"
-    >
-      <Typography variant="h3" className={classes.loginLabel}>
-        Login
-      </Typography>
-      <Typography variant="h6" className={classes.loginTagline}>
-        Sign In to your account
-      </Typography>
-      <CustomInput
-        label="E-mail"
-        type={"text"}
-        id="email"
-        placeholder="E-mail"
-        helperText={
-          isError("email", errors, touched)
-            ? isErrorMessage("email", errors)
-            : ""
-        }
-        error={isError("email", errors, touched)}
-        {...getFieldProps("email")}
-        InputProps={{
-          startAdornment: startIcon("email"),
-        }}
-      />
-      <CustomInput
-        type={showPassword ? "text" : "password"}
-        id="password"
-        label="Password"
-        placeholder="Password"
-        helperText={
-          isError("password", errors, touched)
-            ? isErrorMessage("password", errors)
-            : ""
-        }
-        error={isError("password", errors, touched)}
-        InputProps={{
-          endAdornment: passwordEye(),
-          startAdornment: startIcon("password"),
-        }}
-        {...getFieldProps("password")}
-        sx={{ margin: "20px 0px" }}
-      />
-      <Box className={classes.buttonWrapper}>
-        <CustomButton
-          variant="contained"
-          type="submit"
-          disabled={!(isValid && dirty) || isSubmitting}
-        >
-          Login
-        </CustomButton>
-      </Box>
-    </Box>
+    <StyledBox>
+      <form onSubmit={() => handleSubmit()} autoComplete="off">
+        <StyledLabel variant="h3">Login</StyledLabel>
+        <StyledTagline variant="h6">Sign In to your account</StyledTagline>
+        <CustomInput
+          label="E-mail"
+          type={"text"}
+          id="email"
+          placeholder="E-mail"
+          helperText={
+            isError("email", errors, touched)
+              ? isErrorMessage("email", errors)
+              : ""
+          }
+          error={isError("email", errors, touched)}
+          {...getFieldProps("email")}
+          InputProps={{
+            startAdornment: startIcon("email"),
+          }}
+        />
+        <CustomInput
+          type={showPassword ? "text" : "password"}
+          id="password"
+          label="Password"
+          placeholder="Password"
+          helperText={
+            isError("password", errors, touched)
+              ? isErrorMessage("password", errors)
+              : ""
+          }
+          error={isError("password", errors, touched)}
+          InputProps={{
+            endAdornment: passwordEye(),
+            startAdornment: startIcon("password"),
+          }}
+          {...getFieldProps("password")}
+          sx={{ margin: "20px 0px" }}
+        />
+        <Box display={"flex"} justifyContent={"flex-end"}>
+          <CustomButton
+            variant="contained"
+            type="submit"
+            //  uncomment to add validations
+            // disabled={!(isValid && dirty) || isSubmitting}
+          >
+            Login
+          </CustomButton>
+        </Box>
+      </form>
+    </StyledBox>
   );
 };
 export default LoginPage;
