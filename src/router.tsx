@@ -5,6 +5,7 @@ import { RouteObject } from "react-router";
 import SidebarLayout from "src/layouts/SidebarLayout";
 
 import SuspenseLoader from "src/components/SuspenseLoader";
+import { LOGIN } from "./constants/routeConstants";
 
 const Loader = (Component) => (props) =>
   (
@@ -23,7 +24,7 @@ const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
 
 const routes: RouteObject[] = [
   {
-    path: "/login",
+    path: LOGIN,
     element: <LoginPage />,
   },
   {

@@ -1,15 +1,14 @@
 import React from "react";
-import { Box } from "@mui/material";
-
-import classes from "./Login.module.scss";
+import logo from "src/assests/images/optima-logo.png";
 import LoginPage from "src/pages/auth/login/components/loginPage/LoginPage";
+import { StyledBox } from "./Login.style";
 
 const Login = () => {
   return (
-    <Box className={classes.container}>
-      <img src={"/icon-192x192.png"} alt="logo" className={classes.logo} />
+    <StyledBox>
+      <img src={logo} alt="Optima Geeks" className={"logo"} />
       <LoginPage />
-    </Box>
+    </StyledBox>
   );
 };
 export default Login;

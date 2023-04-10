@@ -7,13 +7,14 @@ import { useEffect } from "react";
 import { RootState } from "src/store/store";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { LOGIN } from "src/constants/routeConstants";
 
 const Dashoard = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) navigate("/login");
+    if (!token) navigate(LOGIN);
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import { List, darken, styled } from "@mui/material";
+import { List, styled } from "@mui/material";
 
 export const StyledList = styled(List)(
   ({ theme }) => `
