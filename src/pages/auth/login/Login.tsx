@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import classes from "./Login.module.scss";
-import LoginPage from "./components/loginPage/LoginPage";
+import LoginPage from "src/pages/auth/login/components/loginPage/LoginPage";
 
 const Login = () => {
   return (

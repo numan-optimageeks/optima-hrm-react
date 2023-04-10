@@ -4,26 +4,26 @@ import {
   Container,
   Divider,
   IconButton,
-  Tooltip
-} from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+  Tooltip,
+} from "@mui/material";
+import { Helmet } from "react-helmet-async";
 
-import { styled } from '@mui/material/styles';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import Logo from 'src/components/Logo';
+import { styled } from "@mui/material/styles";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import Logo from "src/components/Logo";
 
 const MainContent = styled(Box)(
   () => `
-    height: 100%;
-    display: flex;
-    flex: 1;
-    overflow: auto;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
+      height: 100%;
+      display: flex;
+      flex: 1;
+      overflow: auto;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  `
 );
 
 function StatusMaintenance() {
@@ -63,7 +63,7 @@ function StatusMaintenance() {
           >
             <Box>
               <Typography component="span" variant="subtitle1">
-                Phone:{' '}
+                Phone:{" "}
               </Typography>
               <Typography
                 component="span"

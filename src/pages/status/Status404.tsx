@@ -7,35 +7,35 @@ import {
   Button,
   FormControl,
   OutlinedInput,
-  InputAdornment
-} from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+  InputAdornment,
+} from "@mui/material";
+import { Helmet } from "react-helmet-async";
+import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
 const MainContent = styled(Box)(
   ({ theme }) => `
-    height: 100%;
-    display: flex;
-    flex: 1;
-    overflow: auto;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
+      height: 100%;
+      display: flex;
+      flex: 1;
+      overflow: auto;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  `
 );
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
-    background-color: ${theme.colors.alpha.white[100]};
-`
+      background-color: ${theme.colors.alpha.white[100]};
+  `
 );
 
 const ButtonSearch = styled(Button)(
   ({ theme }) => `
-    margin-right: -${theme.spacing(1)};
-`
+      margin-right: -${theme.spacing(1)};
+  `
 );
 
 function Status404() {
@@ -62,7 +62,7 @@ function Status404() {
             </Typography>
           </Box>
           <Container maxWidth="sm">
-            <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
+            <Card sx={{ textAlign: "center", mt: 3, p: 4 }}>
               <FormControl variant="outlined" fullWidth>
                 <OutlinedInputWrapper
                   type="text"

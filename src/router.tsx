@@ -12,16 +12,14 @@ const Loader = (Component) => (props) =>
       <Component {...props} />
     </Suspense>
   );
-const OptimaDaashBoard = Loader(lazy(() => import("src/content/dashboards")));
+const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
-const HrPage = Loader(lazy(() => import("src/content/hr")));
-const RecruiterPage = Loader(lazy(() => import("src/content/recruiter")));
+const Hr = Loader(lazy(() => import("src/pages/hr/Hr")));
+const Recruiter = Loader(lazy(() => import("src/pages/recruiter/Recruiter")));
 
-const SettingPage = Loader(lazy(() => import("src/content/settings")));
+const SettingPage = Loader(lazy(() => import("src/pages/settings/Settings")));
 
-const LoginPage = Loader(
-  lazy(() => import("src/content/pages/Auth/Login/Login"))
-);
+const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
 
 const routes: RouteObject[] = [
   {
@@ -38,31 +36,23 @@ const routes: RouteObject[] = [
       },
       {
         path: "dashboard",
-        element: <OptimaDaashBoard />,
-      },
-      {
-        path: "",
-        element: <Navigate to="hr" replace />,
+        element: <Dashboard />,
       },
       {
         path: "hr",
-        element: <HrPage />,
-      },
-      {
-        path: "",
-        element: <Navigate to="recruiter" replace />,
+        element: <Hr />,
       },
       {
         path: "recruiter",
-        element: <RecruiterPage />,
-      },
-      {
-        path: "",
-        element: <Navigate to="settings" replace />,
+        element: <Recruiter />,
       },
       {
         path: "settings",
         element: <SettingPage />,
+      },
+      {
+        path: "*",
+        element: <Navigate to="dashboard" replace />,
       },
     ],
   },
