@@ -15,7 +15,7 @@ const defaultUser = {
 };
 const initialState: ISecretState = {
   user: { ...defaultUser },
-  token: "",
+  token: "123",
 };
 
 export const authSlice = createSlice({
