@@ -5,15 +5,20 @@ import { StyledBox } from "./Login.style";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
 import { useNavigate } from "react-router";
-import { LOGIN } from "src/constants/routeConstants";
+import LocalStorage from "src/services/localStorage";
+import { TOKEN } from "src/constants/constants";
 
 const Login = () => {
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) navigate("/dashboard");
-  }, [token]);
+    const checkAuth = async () => {
+      const token = await LocalStorage.GetItem(TOKEN);
+      if (token) navigate(-1);
+    };
+    checkAuth();
+  }, [user?.id]);
   return (
     <StyledBox>
       <img src={logo} alt="Optima Geeks" className={"logo"} />

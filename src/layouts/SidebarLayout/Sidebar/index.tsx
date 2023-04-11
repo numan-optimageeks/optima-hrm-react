@@ -27,7 +27,7 @@ const SidebarWrapper = styled(Box)(
         position: relative;
         z-index: 7;
         height: 100%;
-        padding-bottom: 68px;
+        padding-bottom: 25px;
 `
 );
 
@@ -47,7 +47,7 @@ function Sidebar() {
           position: "fixed",
           left: 0,
           top: 0,
-          background:  '#27385b',
+          background: "#27385b",
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
         }}
@@ -67,24 +67,6 @@ function Sidebar() {
           />
           <Menu />
         </Scrollbar>
-        <Divider
-          sx={{
-            background: theme.colors.alpha.trueWhite[10],
-          }}
-        />
-        <Box p={2}>
-          <Button
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="contained"
-            color="warning"
-            size="small"
-            fullWidth
-          >
-            Upgrade to PRO
-          </Button>
-        </Box>
       </SidebarWrapper>
       <Drawer
         sx={{
@@ -117,7 +99,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[10],
               }}
             />
-            <SidebarMenu />
+            <Menu />
           </Scrollbar>
         </SidebarWrapper>
       </Drawer>
