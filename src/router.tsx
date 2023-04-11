@@ -9,14 +9,14 @@ import { LOGIN } from "./constants/routeConstants";
 import ProtectedRoute from "./components/PrivateRoute/PrivateRoute";
 
 const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+(
+  <Suspense fallback={<SuspenseLoader />}>
+    <Component {...props} />
+  </Suspense>
+);
 const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
-const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
+const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees/Employee")));
 const Departments = Loader(lazy(() => import("src/pages/hr/departments")));
 const Designations = Loader(lazy(() => import("src/pages/hr/designations")));
 const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants")));
