@@ -124,7 +124,7 @@ const SubMenuWrapper = styled(Box)(
 
               &:before {
                 content: ' ';
-                background: ${theme.colors.alpha.trueWhite[100]};
+                background: red;
                 opacity: 0;
                 transition: ${theme.transitions.create([
     'transform',

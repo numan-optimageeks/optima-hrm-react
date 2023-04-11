@@ -2,17 +2,17 @@ import { Helmet } from "react-helmet-async";
 import { Container } from "@mui/material";
 import Footer from "src/components/Footer";
 
-function Settings() {
+function Applicants() {
   return (
     <>
       <Helmet>
-        <title>Optima Portal-Settings</title>
+        <title>Optima-Applicants</title>
       </Helmet>
 
-      <Container maxWidth="lg">Settings</Container>
+      <Container maxWidth="lg">Applicants</Container>
       <Footer />
     </>
   );
 }
 
-export default Settings;
+export default Applicants;

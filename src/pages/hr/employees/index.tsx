@@ -2,11 +2,11 @@ import { Helmet } from "react-helmet-async";
 import { Container } from "@mui/material";
 import Footer from "src/components/Footer";
 
-function HrPage() {
+function Employees() {
   return (
     <>
       <Helmet>
-        <title>Optima-HR</title>
+        <title>Optima-Employees</title>
       </Helmet>
 
       <Container maxWidth="lg">abc</Container>
@@ -15,4 +15,4 @@ function HrPage() {
   );
 }
 
-export default HrPage;
+export default Employees;

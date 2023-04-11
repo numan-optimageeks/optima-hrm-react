@@ -15,10 +15,13 @@ const Loader = (Component) => (props) =>
   );
 const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
-const Hr = Loader(lazy(() => import("src/pages/hr/Hr")));
-const Recruiter = Loader(lazy(() => import("src/pages/recruiter/Recruiter")));
+const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
+const Departments = Loader(lazy(() => import("src/pages/hr/departments")));
+const Designations = Loader(lazy(() => import("src/pages/hr/designations")));
+const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants")));
+const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
 
-const SettingPage = Loader(lazy(() => import("src/pages/settings/Settings")));
+const Users = Loader(lazy(() => import("src/pages/settings/users")));
 
 const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
 
@@ -40,16 +43,28 @@ const routes: RouteObject[] = [
         element: <Dashboard />,
       },
       {
-        path: "hr",
-        element: <Hr />,
+        path: "employees",
+        element: <Emplooyes />,
       },
       {
-        path: "recruiter",
-        element: <Recruiter />,
+        path: "departments",
+        element: <Departments />,
       },
       {
-        path: "settings",
-        element: <SettingPage />,
+        path: "designations",
+        element: <Designations />,
+      },
+      {
+        path: "applicants",
+        element: <Applicants />,
+      },
+      {
+        path: "interviews",
+        element: <Interviews />,
+      },
+      {
+        path: "users",
+        element: <Users />,
       },
       {
         path: "*",

@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  Accordion,
   AccordionDetails,
   AccordionSummary,
-  Typography,
-  styled,
-  useTheme,
+  Typography, useTheme
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { StyledAccordion } from "./MenuSlot.style";

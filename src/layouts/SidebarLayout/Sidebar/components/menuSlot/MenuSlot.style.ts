@@ -4,7 +4,7 @@ export const StyledAccordion = styled(Accordion)(
   ({ theme }) => `
   border-bottom-left-radius:0px !important;
   border-bottom-right-radius:0px !important;
-  background-color: ${darken(theme.colors.alpha.black[100], 0.5)}  !important;
+  background-color: #27385b;
   color: ${theme.colors.alpha.trueWhite[70]};
        
   .MuiAccordionSummary-content{
@@ -15,6 +15,11 @@ export const StyledAccordion = styled(Accordion)(
   }
   .MuiAccordionDetails-root{
     padding:0px !important;
+  }
+  .MuiListItemButton-root{
+    :hover{
+      background-color: #3b558a;
+    }
   }
   `
 );
