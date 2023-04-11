@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { StyledAccordion } from "./MenuSlot.style";
+import { useNavigate } from "react-router";
 
 interface IMenuSlot {
   title: string;
@@ -16,11 +17,21 @@ interface IMenuSlot {
 
 const MenuSlot: React.FC<IMenuSlot> = ({ title, icon, children }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const handleMenuClick = () => {
+    if (title === "Dashboard") {
+      navigate("/dashboard");
+    }
+  };
   return (
-    <StyledAccordion>
+    <StyledAccordion onClick={handleMenuClick}>
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon sx={{ color: theme.colors.alpha.trueWhite[70] }} />
+          title !== "Dashboard" ? (
+            <ExpandMoreIcon sx={{ color: theme.colors.alpha.trueWhite[70] }} />
+          ) : (
+            <></>
+          )
         }
         aria-controls="panel1a-content"
         id={`panel1a-header+${title || ""}`}

@@ -8,14 +8,20 @@ import { RootState } from "src/store/store";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { LOGIN } from "src/constants/routeConstants";
+import LocalStorage from "src/services/localStorage";
+import { TOKEN } from "src/constants/constants";
 
 const Dashoard = () => {
-  const { token } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if (!token) navigate(LOGIN);
-  }, []);
+    const checkAuth = async () => {
+      const token = await LocalStorage.GetItem(TOKEN);
+      if (!token) navigate(LOGIN);
+    };
+    checkAuth();
+  }, [user?.id]);
 
   return (
     <>
