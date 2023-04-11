@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IUser {
   email: string;
-  name: string;
+  full_name: string;
+  id: string;
 }
 
 export interface ISecretState {
@@ -11,7 +12,8 @@ export interface ISecretState {
 }
 const defaultUser = {
   email: "",
-  name: "",
+  full_name: "",
+  id: "",
 };
 const initialState: ISecretState = {
   user: { ...defaultUser },
@@ -22,8 +24,12 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    loginUser: (state, action) => {
+      state.user = action?.payload.user;
+      state.token = action?.payload.token;
+    },
     removeUser: (state) => {
-      state.user = { email: "", name: "" };
+      state.user = { email: "", full_name: "", id: "" };
     },
     updateUser: (state, action) => {
       state.user = action?.payload.user;
@@ -35,6 +41,7 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { removeUser, updateUser, updateToken } = authSlice.actions;
+export const { removeUser, updateUser, updateToken, loginUser } =
+  authSlice.actions;
 
 export default authSlice.reducer;
