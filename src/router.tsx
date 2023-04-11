@@ -6,6 +6,7 @@ import SidebarLayout from "src/layouts/SidebarLayout";
 
 import SuspenseLoader from "src/components/SuspenseLoader";
 import { LOGIN } from "./constants/routeConstants";
+import ProtectedRoute from "./components/PrivateRoute/PrivateRoute";
 
 const Loader = (Component) => (props) =>
   (
@@ -35,42 +36,47 @@ const routes: RouteObject[] = [
     element: <SidebarLayout />,
     children: [
       {
-        index: true,
-        element: <Navigate to="dashboard" replace />,
-      },
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "employees",
-        element: <Emplooyes />,
-      },
-      {
-        path: "departments",
-        element: <Departments />,
-      },
-      {
-        path: "designations",
-        element: <Designations />,
-      },
-      {
-        path: "applicants",
-        element: <Applicants />,
-      },
-      {
-        path: "interviews",
-        element: <Interviews />,
-      },
-      {
-        path: "users",
-        element: <Users />,
-      },
-      {
-        path: "*",
-        element: <Navigate to="dashboard" replace />,
+        element: <ProtectedRoute />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="dashboard" replace />,
+          },
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "employees",
+            element: <Emplooyes />,
+          },
+          {
+            path: "departments",
+            element: <Departments />,
+          },
+          {
+            path: "designations",
+            element: <Designations />,
+          },
+          {
+            path: "applicants",
+            element: <Applicants />,
+          },
+          {
+            path: "interviews",
+            element: <Interviews />,
+          },
+          {
+            path: "users",
+            element: <Users />,
+          },
+        ],
       },
     ],
+  },
+  {
+    path: "/*",
+    element: <Navigate to="dashboard" replace />,
   },
 ];
 

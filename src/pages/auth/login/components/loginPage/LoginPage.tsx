@@ -19,12 +19,16 @@ import { isError, isErrorMessage } from "src/utils/utils";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import { useDispatch } from "react-redux";
-import { updateToken } from "src/store/features/Auth";
+import { loginUser } from "src/store/features/Auth";
 import { useNavigate } from "react-router";
 import { StyledBox, StyledLabel, StyledTagline } from "./LoginPage.style";
+import { useAxios } from "src/hooks/useAxios";
+import LocalStorage from "src/services/localStorage";
+import { TOKEN, USER } from "src/constants/constants";
 
 const LoginPage = () => {
   const theme = useTheme();
+  const AxiosClient = useAxios();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -36,9 +40,24 @@ const LoginPage = () => {
     formikHelpers: FormikHelpers<ILogin>
   ) => {
     try {
-      dispatch(updateToken({ token: "123" }));
+      const payload = {
+        email: values?.email,
+        password: values?.password,
+      };
+      const res = await AxiosClient.post(
+        `${process.env.REACT_APP_MAILING_BACKEND}/auth/login`,
+        payload
+      );
+      const data = res?.data?.data;
+      const user = {
+        email: data?.email,
+        full_name: data?.full_name,
+        id: data?.id,
+      };
+      LocalStorage.SetItem(TOKEN, data?.token);
+      LocalStorage.SetItem(USER, JSON.stringify(user));
+      dispatch(loginUser({ user: user, token: data?.token }));
       navigate("/dashboard");
-      console.log("values", values);
     } catch (err) {
       console.log("Error while Login");
     }
@@ -86,7 +105,7 @@ const LoginPage = () => {
   };
   return (
     <StyledBox>
-      <form onSubmit={() => handleSubmit()} autoComplete="off">
+      <form onSubmit={handleSubmit} autoComplete="off">
         <StyledLabel variant="h3">Login</StyledLabel>
         <StyledTagline variant="h6">Sign In to your account</StyledTagline>
         <CustomInput
