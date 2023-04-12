@@ -25,6 +25,9 @@ const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
 const Users = Loader(lazy(() => import("src/pages/settings/users")));
 
 const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
+const CreateDepartment = Loader(
+  lazy(() => import("src/pages/hr/departments/create/CreateDepartment"))
+);
 
 const routes: RouteObject[] = [
   {
@@ -52,7 +55,16 @@ const routes: RouteObject[] = [
           },
           {
             path: "departments",
-            element: <Departments />,
+            children: [
+              {
+                index: true,
+                element: <Departments />,
+              },
+              {
+                path: "create",
+                element: <CreateDepartment />,
+              },
+            ],
           },
           {
             path: "designations",

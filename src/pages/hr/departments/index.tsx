@@ -1,15 +1,17 @@
 import { Helmet } from "react-helmet-async";
 import { Container } from "@mui/material";
 import Footer from "src/components/Footer";
+import { useNavigate } from "react-router";
 
 function Departments() {
+  const navigate = useNavigate();
   return (
     <>
-      <Helmet>
-        <title>Optima-Departments</title>
-      </Helmet>
+      <Helmet title="Departments" />
 
-      <Container maxWidth="lg">Departments</Container>
+      <Container maxWidth="lg" onClick={() => navigate("/departments/create")}>
+        Departments
+      </Container>
       <Footer />
     </>
   );

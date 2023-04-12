@@ -59,6 +59,7 @@ const LoginPage = () => {
       dispatch(loginUser({ user: user, token: data?.token }));
       navigate("/dashboard");
     } catch (err) {
+      formikHelpers?.resetForm();
       console.log("Error while Login");
     }
   };
