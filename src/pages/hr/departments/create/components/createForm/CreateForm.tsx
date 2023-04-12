@@ -8,12 +8,28 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import { isError, isErrorMessage } from "src/utils/utils";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useAxios } from "src/hooks/useAxios";
+import { IDepartment } from "../../../view/ViewDepartment";
+import { useEffect, useState } from "react";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const location = useLocation();
+  const editState: IDepartment = location?.state;
+  const [initialValue, setInitialValue] = useState({
+    ...initialValues(),
+  });
+  useEffect(() => {
+    if (editState?.id) {
+      const editValues = {
+        name: editState?.department || "",
+        desc: editState?.description || "",
+      };
+      setInitialValue(editValues);
+    }
+  }, [editState]);
   const handleFormSubmit = async (values: CreateDepartment) => {
     try {
       const payload = {
@@ -39,9 +55,10 @@ const CreateForm = () => {
     dirty,
     isSubmitting,
   } = useFormik({
-    initialValues: initialValues(),
+    initialValues: initialValue,
     validationSchema: validations,
     onSubmit: handleFormSubmit,
+    enableReinitialize: true,
   });
   return (
     <form onSubmit={handleSubmit} autoComplete="off">

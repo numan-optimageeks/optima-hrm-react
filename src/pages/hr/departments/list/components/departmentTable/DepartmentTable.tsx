@@ -4,8 +4,10 @@ import { IconButton, Stack, Tooltip } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router";
 
-const DepartmentTable = ({ departmentList }) => {
+const DepartmentTable = ({ departmentList, handleDelete }) => {
+  const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
       field: "department",
@@ -23,17 +25,21 @@ const DepartmentTable = ({ departmentList }) => {
         <>
           <LinkIcon
             title="View"
-            onClick={() => console.log("params", params)}
+            onClick={() =>
+              navigate("/departments/view", { state: params?.row })
+            }
             component={<VisibilityIcon />}
           />
           <LinkIcon
             title="Edit"
-            onClick={() => {}}
+            onClick={() =>
+              navigate("/departments/create", { state: params?.row })
+            }
             component={<CreateIcon />}
           />
           <LinkIcon
             title="Delete"
-            onClick={() => {}}
+            onClick={() => handleDelete(params?.row?.id)}
             component={<DeleteIcon />}
           />
         </>

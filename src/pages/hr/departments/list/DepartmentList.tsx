@@ -12,13 +12,16 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import { useNavigate } from "react-router";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import DepartmentTable from "./components/departmentTable/DepartmentTable";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAxios } from "src/hooks/useAxios";
+import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const [departmentList, setDepartmentList] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const deleteId = useRef("");
 
   useEffect(() => {
     const getDepartments = async () => {
@@ -39,10 +42,30 @@ const DepartmentList = () => {
     getDepartments();
   }, []);
 
+  const handleDelete = (id: string) => {
+    deleteId.current = id;
+    setDeleteModal(true);
+  };
+  const handleDeleteDepartment = async () => {
+    const id = deleteId.current;
+    try {
+      await AxiosClient.delete(`/department/delete/${id}`);
+      const filteredPosts = departmentList?.filter((item) => item?.id !== id);
+      setDepartmentList(filteredPosts);
+    } catch (err) {
+      console.log("Error while delete post", err);
+    }
+    setDeleteModal(false);
+  };
+
   return (
     <>
       <Helmet title="Departments" />
-
+      <DeleteAlert
+        deleteModal={deleteModal}
+        setDeleteModal={setDeleteModal}
+        handleYes={handleDeleteDepartment}
+      />
       <StyledRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
@@ -62,7 +85,10 @@ const DepartmentList = () => {
             </CustomButton>
           </StyledHeader>
           <StyledBody>
-            <DepartmentTable departmentList={departmentList} />
+            <DepartmentTable
+              departmentList={departmentList}
+              handleDelete={handleDelete}
+            />
           </StyledBody>
         </StyledContainer>
       </StyledRoot>

@@ -30,6 +30,9 @@ const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
 const CreateDepartment = Loader(
   lazy(() => import("src/pages/hr/departments/create/CreateDepartment"))
 );
+const ViewDepartment = Loader(
+  lazy(() => import("src/pages/hr/departments/view/ViewDepartment"))
+);
 
 const routes: RouteObject[] = [
   {
@@ -66,6 +69,7 @@ const routes: RouteObject[] = [
                 path: "create",
                 element: <CreateDepartment />,
               },
+              { path: "view", element: <ViewDepartment /> },
             ],
           },
           {

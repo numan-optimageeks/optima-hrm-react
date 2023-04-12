@@ -7,14 +7,20 @@ import {
   StyledRoot,
 } from "./CreateDepartment.style";
 import CreateForm from "./components/createForm/CreateForm";
+import { useLocation } from "react-router";
+import { IDepartment } from "../view/ViewDepartment";
 
 const CreateDepartment = () => {
+  const location = useLocation();
+  const editState: IDepartment = location?.state;
   return (
     <>
       <Helmet title="Create Department" />
       <StyledRoot maxWidth="lg">
         <StyledContainer>
-          <StyledLabel variant="h5">Create Department</StyledLabel>
+          <StyledLabel variant="h5">
+            {editState?.id ? "Edit" : "Create"} Department
+          </StyledLabel>
           <StyledBody>
             <CreateForm />
           </StyledBody>
