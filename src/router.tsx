@@ -17,7 +17,9 @@ const Loader = (Component) => (props) =>
 const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
 const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
-const Departments = Loader(lazy(() => import("src/pages/hr/departments")));
+const DepartmentList = Loader(
+  lazy(() => import("src/pages/hr/departments/list/DepartmentList"))
+);
 const Designations = Loader(lazy(() => import("src/pages/hr/designations")));
 const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants")));
 const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
@@ -58,7 +60,7 @@ const routes: RouteObject[] = [
             children: [
               {
                 index: true,
-                element: <Departments />,
+                element: <DepartmentList />,
               },
               {
                 path: "create",
