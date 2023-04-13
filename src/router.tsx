@@ -20,7 +20,9 @@ const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
 const DepartmentList = Loader(
   lazy(() => import("src/pages/hr/departments/list/DepartmentList"))
 );
-const Designations = Loader(lazy(() => import("src/pages/hr/designations")));
+const Designations = Loader(
+  lazy(() => import("src/pages/hr/designations/list/DesignationList"))
+);
 const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants")));
 const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
 
@@ -32,6 +34,12 @@ const CreateDepartment = Loader(
 );
 const ViewDepartment = Loader(
   lazy(() => import("src/pages/hr/departments/view/ViewDepartment"))
+);
+const CreateDesignation = Loader(
+  lazy(() => import("src/pages/hr/designations/create/CreateDesignation"))
+);
+const ViewDesignation = Loader(
+  lazy(() => import("src/pages/hr/designations/view/ViewDesignation"))
 );
 
 const routes: RouteObject[] = [
@@ -74,7 +82,17 @@ const routes: RouteObject[] = [
           },
           {
             path: "designations",
-            element: <Designations />,
+            children: [
+              {
+                index: true,
+                element: <Designations />,
+              },
+              {
+                path: "create",
+                element: <CreateDesignation />,
+              },
+              { path: "view", element: <ViewDesignation /> },
+            ],
           },
           {
             path: "applicants",
