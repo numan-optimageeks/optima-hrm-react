@@ -29,7 +29,7 @@ const ViewDepartment = () => {
 
   return (
     <>
-      <Helmet title="Create Department" />
+      <Helmet title="View Department" />
 
       <StyledRoot maxWidth="lg">
         <BackButton path={"/departments"} />
