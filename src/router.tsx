@@ -41,6 +41,9 @@ const CreateDesignation = Loader(
 const ViewDesignation = Loader(
   lazy(() => import("src/pages/hr/designations/view/ViewDesignation"))
 );
+const CreateEmployee = Loader(
+  lazy(() => import("src/pages/hr/employees/create/CreateEmployee"))
+);
 
 const routes: RouteObject[] = [
   {
@@ -64,7 +67,17 @@ const routes: RouteObject[] = [
           },
           {
             path: "employees",
-            element: <Emplooyes />,
+            children: [
+              {
+                index: true,
+                element: <Emplooyes />,
+              },
+              {
+                path: "create",
+                element: <CreateEmployee />,
+              },
+              { path: "view", element: <ViewDepartment /> },
+            ],
           },
           {
             path: "departments",
