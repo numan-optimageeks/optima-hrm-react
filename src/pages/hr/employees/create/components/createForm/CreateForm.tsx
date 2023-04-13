@@ -59,7 +59,7 @@ const CreateForm = () => {
         departmentId: Number(values?.departmentId) || null,
         designationId: Number(values?.designationId) || null,
         email: values?.email || "",
-        employeeId: Number(values?.employeeId) || "1",
+        employeeId: values?.employeeId || "",
         fullName: values?.fullName || "",
         gender: values?.gender || "",
         joiningDate: values?.joiningDate || "",

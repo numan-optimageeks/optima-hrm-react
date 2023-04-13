@@ -29,10 +29,7 @@ const DepartmentList = () => {
         const payload = {
           isDeleted: false,
         };
-        const res = await AxiosClient.post(
-          `${process.env.REACT_APP_MAILING_BACKEND}/department/`,
-          payload
-        );
+        const res = await AxiosClient.post(`/department/`, payload);
         setDepartmentList(res?.data?.data || []);
         console.log("res", res?.data.data);
       } catch (err) {
