@@ -36,11 +36,11 @@ const CreateForm = () => {
         department: values?.name,
         description: values?.desc,
       };
-      const res = await AxiosClient.post(
-        `${process.env.REACT_APP_MAILING_BACKEND}/department/create`,
-        payload
-      );
-      console.log(res?.data?.message);
+      if (editState?.id) {
+        await AxiosClient.put(`/department/update/${editState?.id}`, payload);
+      } else {
+        await AxiosClient.post(`/department/create`, payload);
+      }
       navigate("/departments");
     } catch (err) {
       console.log("Error while create department");

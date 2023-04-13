@@ -10,6 +10,7 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import BackButton from "src/components/BackButton/BackButton";
 
 export interface IDepartment {
   id?: number;
@@ -31,6 +32,7 @@ const ViewDepartment = () => {
       <Helmet title="Create Department" />
 
       <StyledRoot maxWidth="lg">
+        <BackButton path={"/departments"} />
         <StyledContainer>
           <StyledLabel variant="h5">View Department</StyledLabel>
           <StyledBody>
