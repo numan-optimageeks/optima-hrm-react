@@ -39,7 +39,7 @@ export const validations = Yup.object().shape({
 export const initialValues = (): CreateEmployee => {
   return {
     address: "",
-    city: "",
+    city: "Ahmadpur Sial",
     cnic: "",
     companyEmail: "",
     contactDetail: "+92",

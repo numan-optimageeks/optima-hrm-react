@@ -16,7 +16,9 @@ const Loader = (Component) => (props) =>
   );
 const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
-const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
+const Employees = Loader(
+  lazy(() => import("src/pages/hr/employees/list/EmployeeList"))
+);
 const DepartmentList = Loader(
   lazy(() => import("src/pages/hr/departments/list/DepartmentList"))
 );
@@ -70,7 +72,7 @@ const routes: RouteObject[] = [
             children: [
               {
                 index: true,
-                element: <Emplooyes />,
+                element: <Employees />,
               },
               {
                 path: "create",

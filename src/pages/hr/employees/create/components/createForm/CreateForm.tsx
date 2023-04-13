@@ -56,14 +56,14 @@ const CreateForm = () => {
         companyEmail: values?.companyEmail || "",
         contactDetail: values?.contactDetail || "",
         dateOfBirth: values?.dateOfBirth || "",
-        departmentId: values?.departmentId || "",
-        designationId: values?.designationId || "",
+        departmentId: Number(values?.departmentId) || null,
+        designationId: Number(values?.designationId) || null,
         email: values?.email || "",
-        employeeId: values?.employeeId || "",
+        employeeId: Number(values?.employeeId) || "1",
         fullName: values?.fullName || "",
         gender: values?.gender || "",
         joiningDate: values?.joiningDate || "",
-        managerId: values?.managerId || "",
+        managerId: Number(values?.managerId) || null,
         state: values?.state || "",
         workType: values?.workType || "",
       };
@@ -161,6 +161,21 @@ const CreateForm = () => {
         value: "",
       },
       ...(designations || []),
+    ];
+  };
+  const getEmployees = () => {
+    const employees = details[2]?.data?.map((item) => {
+      return {
+        label: item?.fullName,
+        value: item?.id,
+      };
+    });
+    return [
+      {
+        label: "",
+        value: "",
+      },
+      ...(employees || []),
     ];
   };
 
@@ -387,7 +402,7 @@ const CreateForm = () => {
               native: true,
             }}
           >
-            {WorkTypes?.map((option) => (
+            {getEmployees()?.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
