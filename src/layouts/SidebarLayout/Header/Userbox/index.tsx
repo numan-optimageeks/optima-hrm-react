@@ -54,7 +54,7 @@ const UserBoxDescription = styled(Typography)(
 const HeaderUserbox = () => {
   const dispatch = useDispatch();
   const user = {
-    name: "Optima Admin",
+    name: "Admin",
     avatar: "/static/images/avatars/3.jpg",
     jobtitle: "Project Manager",
   };

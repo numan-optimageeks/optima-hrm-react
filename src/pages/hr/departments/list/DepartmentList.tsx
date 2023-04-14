@@ -15,12 +15,20 @@ import DepartmentTable from "./components/departmentTable/DepartmentTable";
 import { useEffect, useRef, useState } from "react";
 import { useAxios } from "src/hooks/useAxios";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
+import { useDebounce } from "src/hooks/useDebounce";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const [departmentList, setDepartmentList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedValue = useDebounce(searchTerm, 400);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [pages, setPages] = useState(1);
   const deleteId = useRef("");
 
   useEffect(() => {
@@ -28,16 +36,21 @@ const DepartmentList = () => {
       try {
         const payload = {
           isDeleted: false,
+          search: debouncedValue || "",
+          page: paginationModel?.page + 1,
         };
+        const searchRes = await AxiosClient.get(
+          `/department/totalCount/?search=${debouncedValue || null}`
+        );
         const res = await AxiosClient.post(`/department/`, payload);
+        setPages(searchRes?.data?.data);
         setDepartmentList(res?.data?.data || []);
-        console.log("res", res?.data.data);
       } catch (err) {
         console.log("error while get departments....");
       }
     };
     getDepartments();
-  }, []);
+  }, [debouncedValue, paginationModel.page]);
 
   const handleDelete = (id: string) => {
     deleteId.current = id;
@@ -72,6 +85,8 @@ const DepartmentList = () => {
                 type={"text"}
                 id="search-department"
                 placeholder="Search..."
+                onChange={(e) => setSearchTerm(e?.target?.value)}
+                value={debouncedValue}
               />
             </SearchBox>
             <CustomButton
@@ -85,6 +100,9 @@ const DepartmentList = () => {
             <DepartmentTable
               departmentList={departmentList}
               handleDelete={handleDelete}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+              pages={pages}
             />
           </StyledBody>
         </StyledContainer>

@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 
 function PageHeader() {
   const user = {
-    name: "Optima Admin",
+    name: "Admin",
     avatar: "/static/images/avatars/3.jpg",
   };
   const theme = useTheme();

@@ -5,8 +5,15 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const DepartmentTable = ({ departmentList, handleDelete }) => {
+const DepartmentTable = ({
+  departmentList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -52,15 +59,10 @@ const DepartmentTable = ({ departmentList, handleDelete }) => {
     <StyledBox rows={departmentList?.length}>
       <StyledTable
         rows={departmentList}
+        rowCount={pages}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -68,6 +70,7 @@ const DepartmentTable = ({ departmentList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>
