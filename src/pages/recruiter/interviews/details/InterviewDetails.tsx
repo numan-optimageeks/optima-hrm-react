@@ -1,35 +1,44 @@
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
 import {
-  SearchBox,
   StyledBody,
   StyledContainer,
   StyledHeader,
   StyledRoot,
-} from "./InterviewList.style";
+} from "./InterviewDetails.style";
 import { Typography } from "@mui/material";
-import CustomInput from "src/components/CustomInput/CustomInput";
+import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
-import InterviewTable from "./InterviewTable/InterviewTable";
+import DetailsTable from "./components/detailsTable/DetailsTable";
 
-const InterviewList = () => {
+const InterviewDetails = () => {
   const navigate = useNavigate();
+  const location: any = useLocation();
   const AxiosClient = useAxios();
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const deleteId = useRef("");
   useEffect(() => {
     const getApplicants = async () => {
+      const editstate = location?.state;
       try {
         const payload = {
           isDeleted: false,
         };
         const res = await AxiosClient.post(`/applicant/`, payload);
-        setApplicantList(res?.data?.data || []);
-        console.log("res", res?.data.data);
+        const data = res?.data?.data;
+        const current = data?.find((item) => item?.id === editstate?.id);
+        const mapped = current?.interviewDetails?.map((val) => {
+          return {
+            fullName: current?.fullName || "",
+            interviewerName: current?.interviewerName || "",
+            ...val,
+          };
+        });
+        setApplicantList(mapped || []);
       } catch (err) {
         console.log("error while get applicant....");
       }
@@ -63,17 +72,9 @@ const InterviewList = () => {
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Interview List</Typography>
-            <SearchBox>
-              <CustomInput
-                type={"text"}
-                id="search-interview"
-                placeholder="Search..."
-              />
-            </SearchBox>
-            <div />
           </StyledHeader>
           <StyledBody>
-            <InterviewTable
+            <DetailsTable
               applicantList={applicantList}
               handleDelete={handleDelete}
             />
@@ -84,4 +85,4 @@ const InterviewList = () => {
     </>
   );
 };
-export default InterviewList;
+export default InterviewDetails;
