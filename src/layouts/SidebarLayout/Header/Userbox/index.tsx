@@ -1,7 +1,4 @@
-import { useRef, useState } from 'react';
-
-import { NavLink } from 'react-router-dom';
-
+import { useRef, useState } from "react";
 import {
   Avatar,
   Box,
@@ -9,19 +6,15 @@ import {
   Divider,
   Hidden,
   lighten,
-  List,
-  ListItem,
-  ListItemText,
   Popover,
-  Typography
-} from '@mui/material';
-
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
+import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import { TOKEN, USER } from "src/constants/constants";
+import { removeUser } from "src/store/features/Auth";
+import { useDispatch } from "react-redux";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -58,11 +51,12 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function HeaderUserbox() {
+const HeaderUserbox = () => {
+  const dispatch = useDispatch();
   const user = {
-    name: 'Optima Admin',
-    avatar: '/static/images/avatars/3.jpg',
-    jobtitle: 'Project Manager'
+    name: "Optima Admin",
+    avatar: "/static/images/avatars/3.jpg",
+    jobtitle: "Project Manager",
   };
 
   const ref = useRef<any>(null);
@@ -74,6 +68,11 @@ function HeaderUserbox() {
 
   const handleClose = (): void => {
     setOpen(false);
+  };
+  const logoutUser = () => {
+    localStorage.removeItem(TOKEN);
+    localStorage.removeItem(USER);
+    dispatch(removeUser());
   };
 
   return (
@@ -97,12 +96,12 @@ function HeaderUserbox() {
         onClose={handleClose}
         open={isOpen}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
@@ -115,27 +114,10 @@ function HeaderUserbox() {
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
-        <List sx={{ p: 1 }} component="nav">
-          <ListItem button to="/management/profile/details" component={NavLink}>
-            <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary="My Profile" />
-          </ListItem>
-          <ListItem button to="/dashboards/messenger" component={NavLink}>
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary="Messenger" />
-          </ListItem>
-          <ListItem
-            button
-            to="/management/profile/settings"
-            component={NavLink}
-          >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary="Account Settings" />
-          </ListItem>
-        </List>
+
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={logoutUser}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>
@@ -143,6 +125,6 @@ function HeaderUserbox() {
       </Popover>
     </>
   );
-}
+};
 
 export default HeaderUserbox;
