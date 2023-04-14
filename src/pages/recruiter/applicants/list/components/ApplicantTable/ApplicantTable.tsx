@@ -47,7 +47,10 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
       headerName: "Last Status",
       disableColumnMenu: true,
       minWidth: 100,
-      valueGetter: (params) => params?.row?.interviewDetails[0]?.status,
+      valueGetter: (params) => {
+        const data = params?.row?.interviewDetails;
+        return data?.length > 0 ? data[data?.length - 1]?.status : "";
+      },
     },
     {
       field: "actions",

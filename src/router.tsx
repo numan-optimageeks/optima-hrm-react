@@ -76,7 +76,9 @@ const InterviewDetails = Loader(
 const ViewInterview = Loader(
   lazy(() => import("src/pages/recruiter/interviews/view/ViewInterview"))
 );
-
+const CreateInterview = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/create/CreateInterview"))
+);
 const routes: RouteObject[] = [
   {
     path: LOGIN,
@@ -168,7 +170,7 @@ const routes: RouteObject[] = [
               },
               {
                 path: "create",
-                element: <CreateUser />,
+                element: <CreateInterview />,
               },
               { path: "view", element: <ViewInterview /> },
             ],

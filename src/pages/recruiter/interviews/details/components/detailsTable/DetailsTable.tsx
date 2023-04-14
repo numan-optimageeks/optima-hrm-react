@@ -1,14 +1,16 @@
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Stack } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { LinkIcon } from "src/pages/hr/departments/list/components/departmentTable/DepartmentTable";
 import { StyledBox, StyledTable } from "./DetailsTable.style";
 
 const DetailsTable = ({ applicantList, handleDelete }) => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const editstate = location?.state;
   const columns: GridColDef[] = [
     {
       field: "fullName",
@@ -62,9 +64,7 @@ const DetailsTable = ({ applicantList, handleDelete }) => {
           />
           <LinkIcon
             title="Edit"
-            onClick={() =>
-              navigate("/interviews/create", { state: params?.row })
-            }
+            onClick={() => navigate("/interviews/create", { state: editstate })}
             component={<CreateIcon />}
           />
           <LinkIcon

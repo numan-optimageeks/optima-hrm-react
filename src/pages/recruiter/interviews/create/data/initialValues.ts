@@ -1,0 +1,52 @@
+import * as Yup from "yup";
+import { format } from "date-fns";
+
+export interface CreateInterview {
+  interviewerId?: number;
+  interviewerName?: string;
+  status?: string;
+  interviewTimings?: string;
+  appliedFor?: string;
+  currentCompany?: string;
+  currentCompanyExperience?: string;
+  teamLeadExperience?: string;
+  totalExperience?: string;
+  applicantId?: string;
+  companyContactPerson?: string;
+  currentSalary?: string;
+  expectedSalary?: string;
+  noticePeriod?: string;
+
+  hrScore?: string;
+  technicalScore?: string;
+  hrRemarks?: string;
+  interviewerRemarks?: string;
+  recommendationStatus?: string;
+}
+
+export const validations = Yup.object().shape({});
+
+export const initialValues = (): CreateInterview => {
+  return {
+    interviewerId: null,
+    interviewerName: "",
+    status: "",
+    interviewTimings: "",
+    appliedFor: "",
+    currentCompany: "",
+    currentCompanyExperience: "",
+    teamLeadExperience: "",
+    totalExperience: "",
+    applicantId: "",
+    companyContactPerson: "",
+    currentSalary: "",
+    expectedSalary: "",
+    noticePeriod: "",
+
+    hrScore: "",
+    technicalScore: "",
+    hrRemarks: "",
+    interviewerRemarks: "",
+    recommendationStatus: "",
+  };
+};

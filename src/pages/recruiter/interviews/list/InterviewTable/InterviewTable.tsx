@@ -29,7 +29,9 @@ const InterviewTable = ({ applicantList = [], handleDelete }) => {
       minWidth: 150,
       valueGetter: (params) => {
         const interviews = params?.row?.interviewDetails;
-        return interviews?.length > 0 ? interviews[0]?.interviewTimings : "";
+        return interviews?.length > 0
+          ? interviews[interviews?.length - 1]?.interviewTimings
+          : "";
       },
     },
 
@@ -40,7 +42,9 @@ const InterviewTable = ({ applicantList = [], handleDelete }) => {
       minWidth: 100,
       valueGetter: (params) => {
         const interviews = params?.row?.interviewDetails;
-        return interviews?.length > 0 ? interviews[0]?.status : "";
+        return interviews?.length > 0
+          ? interviews[interviews?.length - 1]?.status
+          : "";
       },
     },
     {
