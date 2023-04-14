@@ -72,6 +72,16 @@ const InterviewDetails = () => {
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Interview List</Typography>
+            <CustomButton
+              variant="contained"
+              onClick={() =>
+                navigate("/interviews/create", {
+                  state: { candidate: location?.state },
+                })
+              }
+            >
+              Schedule New
+            </CustomButton>
           </StyledHeader>
           <StyledBody>
             <DetailsTable
