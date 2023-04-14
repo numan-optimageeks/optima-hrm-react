@@ -6,6 +6,7 @@ export const StyledHeader = styled(Typography)(
       padding: 15px;
       background-color: ${theme.colors.alpha.black[10]};
       border-bottom: 1px solid #d8dbe0;
+      margin-top:20px;
         `
 );
 interface IStyledBox {

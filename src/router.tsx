@@ -25,8 +25,12 @@ const DepartmentList = Loader(
 const Designations = Loader(
   lazy(() => import("src/pages/hr/designations/list/DesignationList"))
 );
-const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants/list/ApplicantList")));
-const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
+const Applicants = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/list/ApplicantList"))
+);
+const Interviews = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/list/InterviewList"))
+);
 
 const Users = Loader(
   lazy(() => import("src/pages/settings/users/list/UsersList"))
@@ -59,11 +63,13 @@ const CreateUser = Loader(
 const ViewUser = Loader(
   lazy(() => import("src/pages/settings/users/view/ViewUser"))
 );
-const CreateApplicant= Loader(
-  lazy(() => import("src/pages/recruiter/applicants/create/CreateApplicant")));
+const CreateApplicant = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/create/CreateApplicant"))
+);
 
-const ViewApplicant= Loader(
-  lazy(() => import("src/pages/recruiter/applicants/view/ViewApplicant")));
+const ViewApplicant = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/view/ViewApplicant"))
+);
 
 const routes: RouteObject[] = [
   {
@@ -129,7 +135,7 @@ const routes: RouteObject[] = [
           },
           {
             path: "applicants",
-            
+
             children: [
               {
                 index: true,
@@ -144,7 +150,18 @@ const routes: RouteObject[] = [
           },
           {
             path: "interviews",
-            element: <Interviews />,
+
+            children: [
+              {
+                index: true,
+                element: <Interviews />,
+              },
+              {
+                path: "create",
+                element: <CreateUser />,
+              },
+              { path: "view", element: <ViewUser /> },
+            ],
           },
           {
             path: "users",
