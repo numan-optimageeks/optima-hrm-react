@@ -16,16 +16,69 @@ const Loader = (Component) => (props) =>
   );
 const Dashboard = Loader(lazy(() => import("src/pages/dashboard/Dashboard")));
 
-const Emplooyes = Loader(lazy(() => import("src/pages/hr/employees")));
-const Departments = Loader(lazy(() => import("src/pages/hr/departments")));
-const Designations = Loader(lazy(() => import("src/pages/hr/designations")));
-const Applicants = Loader(lazy(() => import("src/pages/recruiter/applicants")));
-const Interviews = Loader(lazy(() => import("src/pages/recruiter/interviews")));
+const Employees = Loader(
+  lazy(() => import("src/pages/hr/employees/list/EmployeeList"))
+);
+const DepartmentList = Loader(
+  lazy(() => import("src/pages/hr/departments/list/DepartmentList"))
+);
+const Designations = Loader(
+  lazy(() => import("src/pages/hr/designations/list/DesignationList"))
+);
+const Applicants = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/list/ApplicantList"))
+);
+const Interviews = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/list/InterviewList"))
+);
 
-const Users = Loader(lazy(() => import("src/pages/settings/users")));
+const Users = Loader(
+  lazy(() => import("src/pages/settings/users/list/UsersList"))
+);
 
 const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
+const CreateDepartment = Loader(
+  lazy(() => import("src/pages/hr/departments/create/CreateDepartment"))
+);
+const ViewDepartment = Loader(
+  lazy(() => import("src/pages/hr/departments/view/ViewDepartment"))
+);
+const CreateDesignation = Loader(
+  lazy(() => import("src/pages/hr/designations/create/CreateDesignation"))
+);
+const ViewDesignation = Loader(
+  lazy(() => import("src/pages/hr/designations/view/ViewDesignation"))
+);
+const CreateEmployee = Loader(
+  lazy(() => import("src/pages/hr/employees/create/CreateEmployee"))
+);
+const ViewEmployee = Loader(
+  lazy(() => import("src/pages/hr/employees/view/ViewEmployee"))
+);
 
+const CreateUser = Loader(
+  lazy(() => import("src/pages/settings/users/create/CreateUser"))
+);
+
+const ViewUser = Loader(
+  lazy(() => import("src/pages/settings/users/view/ViewUser"))
+);
+const CreateApplicant = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/create/CreateApplicant"))
+);
+
+const ViewApplicant = Loader(
+  lazy(() => import("src/pages/recruiter/applicants/view/ViewApplicant"))
+);
+const InterviewDetails = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/details/InterviewDetails"))
+);
+const ViewInterview = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/view/ViewInterview"))
+);
+const CreateInterview = Loader(
+  lazy(() => import("src/pages/recruiter/interviews/create/CreateInterview"))
+);
 const routes: RouteObject[] = [
   {
     path: LOGIN,
@@ -48,27 +101,94 @@ const routes: RouteObject[] = [
           },
           {
             path: "employees",
-            element: <Emplooyes />,
+            children: [
+              {
+                index: true,
+                element: <Employees />,
+              },
+              {
+                path: "create",
+                element: <CreateEmployee />,
+              },
+              { path: "view", element: <ViewEmployee /> },
+            ],
           },
           {
             path: "departments",
-            element: <Departments />,
+            children: [
+              {
+                index: true,
+                element: <DepartmentList />,
+              },
+              {
+                path: "create",
+                element: <CreateDepartment />,
+              },
+              { path: "view", element: <ViewDepartment /> },
+            ],
           },
           {
             path: "designations",
-            element: <Designations />,
+            children: [
+              {
+                index: true,
+                element: <Designations />,
+              },
+              {
+                path: "create",
+                element: <CreateDesignation />,
+              },
+              { path: "view", element: <ViewDesignation /> },
+            ],
           },
           {
             path: "applicants",
-            element: <Applicants />,
+
+            children: [
+              {
+                index: true,
+                element: <Applicants />,
+              },
+              {
+                path: "create",
+                element: <CreateApplicant />,
+              },
+              { path: "view", element: <ViewApplicant /> },
+            ],
           },
           {
             path: "interviews",
-            element: <Interviews />,
+
+            children: [
+              {
+                index: true,
+                element: <Interviews />,
+              },
+              {
+                path: "details",
+                element: <InterviewDetails />,
+              },
+              {
+                path: "create",
+                element: <CreateInterview />,
+              },
+              { path: "view", element: <ViewInterview /> },
+            ],
           },
           {
             path: "users",
-            element: <Users />,
+
+            children: [
+              {
+                index: true,
+                element: <Users />,
+              },
+              {
+                path: "create",
+                element: <CreateUser />,
+              },
+              { path: "view", element: <ViewUser /> },
+            ],
           },
         ],
       },
