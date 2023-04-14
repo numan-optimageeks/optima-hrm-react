@@ -5,8 +5,8 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 
 const Candidate = () => {
   const location = useLocation();
-  const editState: IInterview = location?.state;
-  console.log("editState", editState);
+  //@ts-ignore
+  const editState: IInterview = location?.state?.candidate;
   return (
     <>
       <StyledForm>

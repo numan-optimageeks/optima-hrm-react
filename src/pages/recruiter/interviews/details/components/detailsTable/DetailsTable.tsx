@@ -64,7 +64,11 @@ const DetailsTable = ({ applicantList, handleDelete }) => {
           />
           <LinkIcon
             title="Edit"
-            onClick={() => navigate("/interviews/create", { state: editstate })}
+            onClick={() =>
+              navigate("/interviews/create", {
+                state: { interview: params?.row, candidate: editstate },
+              })
+            }
             component={<CreateIcon />}
           />
           <LinkIcon

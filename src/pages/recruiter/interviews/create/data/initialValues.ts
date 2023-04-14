@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { format } from "date-fns";
 
-export interface CreateInterview {
+export interface ICreateInterview {
   interviewerId?: number;
   interviewerName?: string;
   status?: string;
@@ -26,12 +26,16 @@ export interface CreateInterview {
 
 export const validations = Yup.object().shape({});
 
-export const initialValues = (): CreateInterview => {
+export const initialValues = (): ICreateInterview => {
+  const getDate = () => {
+    const date = new Date();
+    return `${format(date, "yyyy-MM-dd")}T${format(date, "HH:mm")}`;
+  };
   return {
     interviewerId: null,
     interviewerName: "",
     status: "",
-    interviewTimings: "",
+    interviewTimings: getDate(),
     appliedFor: "",
     currentCompany: "",
     currentCompanyExperience: "",

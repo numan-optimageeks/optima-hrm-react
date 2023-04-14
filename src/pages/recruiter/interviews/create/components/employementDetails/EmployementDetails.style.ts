@@ -6,6 +6,7 @@ export const StyledLabel = styled(Typography)(
       background-color: ${theme.colors.alpha.black[10]};
       border-bottom: 1px solid #d8dbe0;  
         margin: 0px -15px;
+        margin-bottom:20px;
         `
 );
 
