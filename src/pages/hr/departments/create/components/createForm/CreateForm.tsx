@@ -109,7 +109,7 @@ const CreateForm = () => {
           disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

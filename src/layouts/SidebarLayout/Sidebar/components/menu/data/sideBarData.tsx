@@ -7,6 +7,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import WorkIcon from "@mui/icons-material/Work";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 export const SideBarData = (iconColor) => {
   return [
@@ -48,6 +50,17 @@ export const SideBarData = (iconColor) => {
           path: "/interviews",
           title: "Interviews",
           icon: <CalendarMonthIcon sx={iconColor} />,
+        },
+      ],
+    },
+    {
+      title: "Admin",
+      icon: <SupervisorAccountIcon sx={iconColor} />,
+      menu: [
+        {
+          path: "/job-opportunities",
+          title: "Job Opportunities",
+          icon: <WorkIcon sx={iconColor} />,
         },
       ],
     },

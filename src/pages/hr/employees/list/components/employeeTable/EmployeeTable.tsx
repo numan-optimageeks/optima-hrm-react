@@ -50,6 +50,11 @@ const EmployeeTable = ({
       headerName: "Status",
       disableColumnMenu: true,
       minWidth: 100,
+      renderCell: (params) => (
+        <Stack sx={{ textTransform: "capitalize", color: "#04b018" }}>
+          {params?.row?.status}
+        </Stack>
+      ),
     },
     {
       field: "actions",

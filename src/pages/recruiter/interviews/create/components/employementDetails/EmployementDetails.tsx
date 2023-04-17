@@ -489,7 +489,8 @@ const EmployementDetails = () => {
           //   disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {/* @ts-ignore */}
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

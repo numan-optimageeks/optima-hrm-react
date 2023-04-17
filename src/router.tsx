@@ -79,6 +79,16 @@ const ViewInterview = Loader(
 const CreateInterview = Loader(
   lazy(() => import("src/pages/recruiter/interviews/create/CreateInterview"))
 );
+const JobList = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/list/JobList"))
+);
+const ViewJob = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/view/ViewJob"))
+);
+const CreateJob = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/create/CreateJob"))
+);
+
 const routes: RouteObject[] = [
   {
     path: LOGIN,
@@ -173,6 +183,20 @@ const routes: RouteObject[] = [
                 element: <CreateInterview />,
               },
               { path: "view", element: <ViewInterview /> },
+            ],
+          },
+          {
+            path: "/job-opportunities",
+            children: [
+              {
+                index: true,
+                element: <JobList />,
+              },
+              {
+                path: "create",
+                element: <CreateJob />,
+              },
+              { path: "view", element: <ViewJob /> },
             ],
           },
           {
