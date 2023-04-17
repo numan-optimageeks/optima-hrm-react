@@ -21,8 +21,7 @@ const ApplicantTable = ({
       field: "fullName",
       headerName: "Name",
       disableColumnMenu: true,
-      flex: 2,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "email",
@@ -35,19 +34,19 @@ const ApplicantTable = ({
       field: "phoneNumber",
       headerName: "Phone",
       disableColumnMenu: true,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "cnic",
       headerName: "CNIC",
       disableColumnMenu: true,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "gender",
       headerName: "Gender",
       disableColumnMenu: true,
-      minWidth: 100,
+      minWidth: 80,
     },
     {
       field: "interviewDetails",
