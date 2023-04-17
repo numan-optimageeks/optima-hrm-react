@@ -15,10 +15,13 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
 import UserTable from "./components/userTable/userTable";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
 
 const UserList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const [userList, setUserList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const deleteId = useRef("");
@@ -28,9 +31,8 @@ const UserList = () => {
       try {
         const res = await AxiosClient.post(`/users/`);
         setUserList(res?.data?.data || []);
-        console.log("res", res?.data.data);
       } catch (err) {
-        console.log("error while get users....");
+        toast.error(transformError(err)?.message);
       }
     };
     getUsers();
@@ -48,7 +50,7 @@ const UserList = () => {
       const filteredPosts = userList?.filter((item) => item?.id !== id);
       setUserList(filteredPosts);
     } catch (err) {
-      console.log("Error while delete post", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

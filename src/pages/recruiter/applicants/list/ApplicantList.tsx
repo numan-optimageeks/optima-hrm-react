@@ -16,10 +16,13 @@ import {
 } from "./ApplicantList.style";
 import ApplicantTable from "./components/ApplicantTable/ApplicantTable";
 import { useDebounce } from "src/hooks/useDebounce";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const ApplicantList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +49,7 @@ const ApplicantList = () => {
         setApplicantList(res?.data?.data || []);
         setPages(searchRes?.data?.data);
       } catch (err) {
-        console.log("error while get applicant....");
+        toast.error(transformError(err)?.message);
       }
     };
     getApplicants();
@@ -62,7 +65,7 @@ const ApplicantList = () => {
       const filtered = applicantList?.filter((item) => item?.id !== id);
       setApplicantList(filtered);
     } catch (err) {
-      console.log("Error while delete Applicant", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

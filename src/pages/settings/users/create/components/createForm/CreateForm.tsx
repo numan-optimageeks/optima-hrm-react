@@ -14,11 +14,14 @@ import { isError, isErrorMessage } from "src/utils/utils";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   const editState: IUser = location?.state;
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
@@ -56,7 +59,7 @@ const CreateForm = () => {
       }
       navigate("/users");
     } catch (err) {
-      console.log("Error while create user");
+      toast.error(transformError(err)?.message);
     }
   };
   const {

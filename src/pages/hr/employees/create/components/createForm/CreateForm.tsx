@@ -13,11 +13,14 @@ import states from "../../data/states.json";
 import InputMask from "react-input-mask";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   const editState: IEmployee = location?.state;
   const [details, setDetails] = useState([]);
   const [initialValue, setInitialValue] = useState({
@@ -74,7 +77,7 @@ const CreateForm = () => {
       }
       navigate("/employees");
     } catch (err) {
-      console.log("Error while create employee");
+      toast.error(transformError(err)?.message);
     }
   };
   const {
@@ -108,7 +111,7 @@ const CreateForm = () => {
         const res = await AxiosClient.post(`/shared/details`);
         setDetails(res?.data?.data);
       } catch (err) {
-        console.log("error while get details");
+        toast.error(transformError(err)?.message);
       }
     };
     if (!editState?.id) {

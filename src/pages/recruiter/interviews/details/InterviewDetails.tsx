@@ -13,6 +13,8 @@ import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
 import DetailsTable from "./components/detailsTable/DetailsTable";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
 
 const InterviewDetails = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const InterviewDetails = () => {
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const deleteId = useRef("");
+  const toast = useToast();
   useEffect(() => {
     const getApplicants = async () => {
       const editstate = location?.state;
@@ -40,7 +43,7 @@ const InterviewDetails = () => {
         });
         setApplicantList(mapped || []);
       } catch (err) {
-        console.log("error while get applicant....");
+        toast.error(transformError(err)?.message);
       }
     };
     getApplicants();
@@ -56,7 +59,7 @@ const InterviewDetails = () => {
       const filtered = applicantList?.filter((item) => item?.id !== id);
       setApplicantList(filtered);
     } catch (err) {
-      console.log("Error while delete Applicant", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

@@ -18,11 +18,14 @@ import { InterviewTypes, RecomendTypes } from "../../data/constants";
 import { format } from "date-fns";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const EmployementDetails = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   //@ts-ignore
   const editState: ICreateInterview = location?.state?.interview;
   const [details, setDetails] = useState([]);
@@ -30,7 +33,6 @@ const EmployementDetails = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
-  // console.log("editstate", editState);
 
   useEffect(() => {
     const getEmployees = async () => {
@@ -38,7 +40,7 @@ const EmployementDetails = () => {
         const res = await AxiosClient.post(`/employee/`);
         setEmployees(res?.data?.data);
       } catch (err) {
-        console.log("error while get employees");
+        toast.error(transformError(err)?.message);
       }
     };
     getEmployees();
@@ -110,7 +112,7 @@ const EmployementDetails = () => {
       }
       navigate("/interviews");
     } catch (err) {
-      console.log("Error while create interview");
+      toast.error(transformError(err)?.message);
     }
   };
 

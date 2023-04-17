@@ -12,10 +12,13 @@ import { useLocation, useNavigate } from "react-router";
 import { useAxios } from "src/hooks/useAxios";
 import { IDepartment } from "../../../view/ViewDepartment";
 import { useEffect, useState } from "react";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const location = useLocation();
   const editState: IDepartment = location?.state;
   const [initialValue, setInitialValue] = useState({
@@ -43,7 +46,7 @@ const CreateForm = () => {
       }
       navigate("/departments");
     } catch (err) {
-      console.log("Error while create department");
+      toast.error(transformError(err)?.message);
     }
   };
   const {

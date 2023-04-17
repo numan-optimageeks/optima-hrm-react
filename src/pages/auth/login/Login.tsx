@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = await LocalStorage.GetItem(TOKEN);
-      if (token) navigate(-1);
+      if (token) navigate("/dashboard");
     };
     checkAuth();
   }, [user?.id]);

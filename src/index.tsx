@@ -9,12 +9,14 @@ import { SidebarProvider } from "src/contexts/SidebarContext";
 import * as serviceWorker from "src/serviceWorker";
 import "./index.css";
 import { store } from "./store/store";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.render(
   <Provider store={store}>
     <HelmetProvider>
       <SidebarProvider>
         <BrowserRouter>
+          <Toaster />
           <App />
         </BrowserRouter>
       </SidebarProvider>

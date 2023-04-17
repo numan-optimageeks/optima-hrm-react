@@ -16,6 +16,8 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
 import DesignationTable from "./components/designationTable/DesignationTable";
 import { useDebounce } from "src/hooks/useDebounce";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const DesignationList = () => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const DesignationList = () => {
     page: 0,
     pageSize: 10,
   });
+  const toast = useToast();
   const [pages, setPages] = useState(1);
   const deleteId = useRef("");
 
@@ -45,9 +48,8 @@ const DesignationList = () => {
         const res = await AxiosClient.post(`/designation/`, payload);
         setDesignationList(res?.data?.data || []);
         setPages(searchRes?.data?.data);
-        console.log("res", res?.data.data);
       } catch (err) {
-        console.log("error while get designations....");
+        toast.error(transformError(err)?.message);
       }
     };
     getDesignations();
@@ -63,7 +65,7 @@ const DesignationList = () => {
       const filtered = designationList?.filter((item) => item?.id !== id);
       setDesignationList(filtered);
     } catch (err) {
-      console.log("Error while delete designation", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

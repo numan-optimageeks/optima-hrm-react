@@ -24,7 +24,12 @@ export const useAxios = () => {
     );
 
     const responseInterceptor = AxiosClient.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        if (response?.data?.status === "error") {
+          return Promise.reject(new Error(response.data?.message));
+        }
+        return response;
+      },
       (error) => {
         const prevRequest = error?.config;
         if (error?.response?.status === 401 && !prevRequest?.sent) {
@@ -32,6 +37,7 @@ export const useAxios = () => {
           logoutUser();
           navigate("/");
         }
+
         return Promise.reject(error);
       }
     );

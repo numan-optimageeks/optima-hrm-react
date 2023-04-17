@@ -15,6 +15,8 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import Footer from "src/components/Footer";
 import InterviewTable from "./InterviewTable/InterviewTable";
 import { useDebounce } from "src/hooks/useDebounce";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const InterviewList = () => {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const InterviewList = () => {
     page: 0,
     pageSize: 10,
   });
+  const toast = useToast();
   const [pages, setPages] = useState(1);
   const deleteId = useRef("");
   useEffect(() => {
@@ -44,7 +47,7 @@ const InterviewList = () => {
         setApplicantList(res?.data?.data || []);
         setPages(searchRes?.data?.data);
       } catch (err) {
-        console.log("error while get applicant....");
+        toast.error(transformError(err)?.message);
       }
     };
     getApplicants();
@@ -60,7 +63,7 @@ const InterviewList = () => {
       const filtered = applicantList?.filter((item) => item?.id !== id);
       setApplicantList(filtered);
     } catch (err) {
-      console.log("Error while delete Applicant", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

@@ -16,10 +16,13 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import EmployeeTable from "./components/employeeTable/EmployeeTable";
 import Footer from "src/components/Footer";
 import { useDebounce } from "src/hooks/useDebounce";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const [employeeList, setEmployeeList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +49,7 @@ const EmployeeList = () => {
         setEmployeeList(res?.data?.data || []);
         setPages(searchRes?.data?.data);
       } catch (err) {
-        console.log("error while get Employees....");
+        toast.error(transformError(err)?.message);
       }
     };
     getEmployees();
@@ -62,7 +65,7 @@ const EmployeeList = () => {
       const filtered = employeeList?.filter((item) => item?.id !== id);
       setEmployeeList(filtered);
     } catch (err) {
-      console.log("Error while delete Employee", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };

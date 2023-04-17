@@ -12,10 +12,13 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import { Box } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import { isError, isErrorMessage } from "src/utils/utils";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const location = useLocation();
   const editState: IDesignation = location?.state;
   const [initialValue, setInitialValue] = useState({
@@ -45,7 +48,7 @@ const CreateForm = () => {
       }
       navigate("/designations");
     } catch (err) {
-      console.log("Error while create designation");
+      toast.error(transformError(err)?.message);
     }
   };
   const {

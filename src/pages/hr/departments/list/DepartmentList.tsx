@@ -16,10 +16,13 @@ import { useEffect, useRef, useState } from "react";
 import { useAxios } from "src/hooks/useAxios";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useDebounce } from "src/hooks/useDebounce";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const [departmentList, setDepartmentList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +49,7 @@ const DepartmentList = () => {
         setPages(searchRes?.data?.data);
         setDepartmentList(res?.data?.data || []);
       } catch (err) {
-        console.log("error while get departments....");
+        toast.error(transformError(err)?.message);
       }
     };
     getDepartments();
@@ -63,7 +66,7 @@ const DepartmentList = () => {
       const filteredPosts = departmentList?.filter((item) => item?.id !== id);
       setDepartmentList(filteredPosts);
     } catch (err) {
-      console.log("Error while delete post", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
   };
