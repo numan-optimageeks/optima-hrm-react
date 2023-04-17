@@ -6,8 +6,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router";
 import { StyledBox, StyledTable } from "./ApplicantTable.style";
 import { Stack } from "@mui/material";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const ApplicantTable = ({ applicantList, handleDelete }) => {
+const ApplicantTable = ({
+  applicantList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -86,14 +93,9 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
       <StyledTable
         rows={applicantList}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        rowCount={pages}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -101,6 +103,7 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

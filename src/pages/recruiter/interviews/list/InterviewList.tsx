@@ -14,28 +14,41 @@ import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import Footer from "src/components/Footer";
 import InterviewTable from "./InterviewTable/InterviewTable";
+import { useDebounce } from "src/hooks/useDebounce";
 
 const InterviewList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedValue = useDebounce(searchTerm, 400);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [pages, setPages] = useState(1);
   const deleteId = useRef("");
   useEffect(() => {
     const getApplicants = async () => {
       try {
         const payload = {
           isDeleted: false,
+          search: debouncedValue || "",
+          page: paginationModel?.page + 1,
         };
+        const searchRes = await AxiosClient.get(
+          `/applicant/totalCount/?search=${debouncedValue || null}`
+        );
         const res = await AxiosClient.post(`/applicant/`, payload);
         setApplicantList(res?.data?.data || []);
-        console.log("res", res?.data.data);
+        setPages(searchRes?.data?.data);
       } catch (err) {
         console.log("error while get applicant....");
       }
     };
     getApplicants();
-  }, []);
+  }, [debouncedValue, paginationModel?.page]);
   const handleDelete = (id: string) => {
     deleteId.current = id;
     setDeleteModal(true);
@@ -68,6 +81,8 @@ const InterviewList = () => {
                 type={"text"}
                 id="search-interview"
                 placeholder="Search..."
+                onChange={(e) => setSearchTerm(e?.target?.value)}
+                value={debouncedValue}
               />
             </SearchBox>
             <div />
@@ -76,6 +91,9 @@ const InterviewList = () => {
             <InterviewTable
               applicantList={applicantList}
               handleDelete={handleDelete}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+              pages={pages}
             />
           </StyledBody>
         </StyledContainer>

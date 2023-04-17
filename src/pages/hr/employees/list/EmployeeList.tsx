@@ -15,12 +15,20 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import EmployeeTable from "./components/employeeTable/EmployeeTable";
 import Footer from "src/components/Footer";
+import { useDebounce } from "src/hooks/useDebounce";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const [employeeList, setEmployeeList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedValue = useDebounce(searchTerm, 400);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [pages, setPages] = useState(1);
   const deleteId = useRef("");
 
   useEffect(() => {
@@ -28,16 +36,21 @@ const EmployeeList = () => {
       try {
         const payload = {
           isDeleted: false,
+          search: debouncedValue || "",
+          page: paginationModel?.page + 1,
         };
+        const searchRes = await AxiosClient.get(
+          `/employee/totalCount/?search=${debouncedValue || null}`
+        );
         const res = await AxiosClient.post(`/employee/`, payload);
         setEmployeeList(res?.data?.data || []);
-        console.log("res", res?.data.data);
+        setPages(searchRes?.data?.data);
       } catch (err) {
         console.log("error while get Employees....");
       }
     };
     getEmployees();
-  }, []);
+  }, [debouncedValue, paginationModel?.page]);
   const handleDelete = (id: string) => {
     deleteId.current = id;
     setDeleteModal(true);
@@ -70,6 +83,8 @@ const EmployeeList = () => {
                 type={"text"}
                 id="search-designation"
                 placeholder="Search..."
+                onChange={(e) => setSearchTerm(e?.target?.value)}
+                value={debouncedValue}
               />
             </SearchBox>
             <CustomButton
@@ -83,6 +98,9 @@ const EmployeeList = () => {
             <EmployeeTable
               employeeList={employeeList}
               handleDelete={handleDelete}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+              pages={pages}
             />
           </StyledBody>
         </StyledContainer>

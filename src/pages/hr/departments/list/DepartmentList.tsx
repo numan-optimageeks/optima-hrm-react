@@ -50,7 +50,7 @@ const DepartmentList = () => {
       }
     };
     getDepartments();
-  }, [debouncedValue, paginationModel.page]);
+  }, [debouncedValue, paginationModel?.page]);
 
   const handleDelete = (id: string) => {
     deleteId.current = id;
