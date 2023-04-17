@@ -18,6 +18,7 @@ import ApplicantTable from "./components/ApplicantTable/ApplicantTable";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const ApplicantList = () => {
   const navigate = useNavigate();
@@ -31,11 +32,13 @@ const ApplicantList = () => {
     page: 0,
     pageSize: 10,
   });
+  const [loading, setLoading] = useState(false);
   const [pages, setPages] = useState(1);
   const deleteId = useRef("");
 
   useEffect(() => {
     const getApplicants = async () => {
+      setLoading(true);
       try {
         const payload = {
           isDeleted: false,
@@ -51,6 +54,7 @@ const ApplicantList = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getApplicants();
   }, [debouncedValue, paginationModel?.page]);
@@ -60,6 +64,7 @@ const ApplicantList = () => {
   };
   const handleDeleteApplicant = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/applicant/delete/${id}`);
       const filtered = applicantList?.filter((item) => item?.id !== id);
@@ -68,10 +73,12 @@ const ApplicantList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
       <Helmet title="Applicants" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}

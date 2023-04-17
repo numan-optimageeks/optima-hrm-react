@@ -17,6 +17,7 @@ import Footer from "src/components/Footer";
 import UserTable from "./components/userTable/userTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -24,16 +25,19 @@ const UserList = () => {
   const toast = useToast();
   const [userList, setUserList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
 
   useEffect(() => {
     const getUsers = async () => {
+      setLoading(true);
       try {
         const res = await AxiosClient.post(`/users/`);
         setUserList(res?.data?.data || []);
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getUsers();
   }, []);
@@ -45,6 +49,7 @@ const UserList = () => {
 
   const handleDeleteUser = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/users/delete/${id}`);
       const filteredPosts = userList?.filter((item) => item?.id !== id);
@@ -53,11 +58,13 @@ const UserList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
 
   return (
     <>
       <Helmet title="Users" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}

@@ -18,6 +18,7 @@ import Footer from "src/components/Footer";
 import { useDebounce } from "src/hooks/useDebounce";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
@@ -32,10 +33,12 @@ const EmployeeList = () => {
     pageSize: 10,
   });
   const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
 
   useEffect(() => {
     const getEmployees = async () => {
+      setLoading(true);
       try {
         const payload = {
           isDeleted: false,
@@ -51,6 +54,7 @@ const EmployeeList = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getEmployees();
   }, [debouncedValue, paginationModel?.page]);
@@ -60,6 +64,7 @@ const EmployeeList = () => {
   };
   const handleDeleteEmployee = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/employee/delete/${id}`);
       const filtered = employeeList?.filter((item) => item?.id !== id);
@@ -68,9 +73,11 @@ const EmployeeList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
+      {loading && <Loader />}
       <Helmet title="Employees" />
       <DeleteAlert
         deleteModal={deleteModal}

@@ -15,6 +15,7 @@ import Footer from "src/components/Footer";
 import DetailsTable from "./components/detailsTable/DetailsTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
 
 const InterviewDetails = () => {
   const navigate = useNavigate();
@@ -22,10 +23,12 @@ const InterviewDetails = () => {
   const AxiosClient = useAxios();
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
   const toast = useToast();
   useEffect(() => {
     const getApplicants = async () => {
+      setLoading(true);
       const editstate = location?.state;
       try {
         const payload = {
@@ -45,6 +48,7 @@ const InterviewDetails = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getApplicants();
   }, []);
@@ -54,6 +58,7 @@ const InterviewDetails = () => {
   };
   const handleDeleteInterview = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/interview/delete/${id}`);
       const filtered = applicantList?.filter((item) => item?.id !== id);
@@ -62,10 +67,12 @@ const InterviewDetails = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
       <Helmet title="Interviews" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}

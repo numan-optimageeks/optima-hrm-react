@@ -18,6 +18,7 @@ import DesignationTable from "./components/designationTable/DesignationTable";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const DesignationList = () => {
   const navigate = useNavigate();
@@ -30,12 +31,14 @@ const DesignationList = () => {
     page: 0,
     pageSize: 10,
   });
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const [pages, setPages] = useState(1);
   const deleteId = useRef("");
 
   useEffect(() => {
     const getDesignations = async () => {
+      setLoading(true);
       try {
         const payload = {
           isDeleted: false,
@@ -51,6 +54,7 @@ const DesignationList = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getDesignations();
   }, [debouncedValue, paginationModel?.page]);
@@ -60,6 +64,7 @@ const DesignationList = () => {
   };
   const handleDeleteDesignation = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/designation/delete/${id}`);
       const filtered = designationList?.filter((item) => item?.id !== id);
@@ -68,10 +73,12 @@ const DesignationList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
       <Helmet title="Designations" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}

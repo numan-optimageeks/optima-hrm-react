@@ -18,6 +18,7 @@ import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ const CreateForm = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (editState?.id) {
       const editValues = {
@@ -48,6 +51,7 @@ const CreateForm = () => {
   }, [editState]);
 
   const handleFormSubmit = async (values: CreateApplicant) => {
+    setLoading(true);
     try {
       const payload = {
         address: values?.address || "",
@@ -70,6 +74,7 @@ const CreateForm = () => {
     } catch (err) {
       toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -110,6 +115,7 @@ const CreateForm = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <StyledForm>
         <StyledInput>
           <CustomInput

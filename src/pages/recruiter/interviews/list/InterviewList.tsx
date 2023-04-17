@@ -17,6 +17,7 @@ import InterviewTable from "./InterviewTable/InterviewTable";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const InterviewList = () => {
   const navigate = useNavigate();
@@ -31,10 +32,12 @@ const InterviewList = () => {
   });
   const toast = useToast();
   const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
   useEffect(() => {
     const getApplicants = async () => {
       try {
+        setLoading(true);
         const payload = {
           isDeleted: false,
           search: debouncedValue || "",
@@ -49,6 +52,7 @@ const InterviewList = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getApplicants();
   }, [debouncedValue, paginationModel?.page]);
@@ -58,6 +62,7 @@ const InterviewList = () => {
   };
   const handleDeleteInterview = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/interview/delete/${id}`);
       const filtered = applicantList?.filter((item) => item?.id !== id);
@@ -66,10 +71,12 @@ const InterviewList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
       <Helmet title="Interviews" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}

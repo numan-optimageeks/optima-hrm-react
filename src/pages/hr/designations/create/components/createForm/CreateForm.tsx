@@ -14,6 +14,7 @@ import CustomInput from "src/components/CustomInput/CustomInput";
 import { isError, isErrorMessage } from "src/utils/utils";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const CreateForm = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (editState?.id) {
       const editValues = {
@@ -35,6 +38,7 @@ const CreateForm = () => {
     }
   }, [editState]);
   const handleFormSubmit = async (values: CreateDesignation) => {
+    setLoading(true);
     try {
       const payload = {
         designation: values?.name,
@@ -50,6 +54,7 @@ const CreateForm = () => {
     } catch (err) {
       toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -67,6 +72,7 @@ const CreateForm = () => {
   });
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <CustomInput
         label="Designation"
         type={"text"}

@@ -16,6 +16,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const CreateForm = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -42,6 +44,7 @@ const CreateForm = () => {
     }
   }, [editState]);
   const handleFormSubmit = async (values: CreateUser) => {
+    setLoading(true);
     try {
       const payload = {
         email: values?.email || "",
@@ -61,6 +64,7 @@ const CreateForm = () => {
     } catch (err) {
       toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -99,6 +103,7 @@ const CreateForm = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <CustomInput
         label="Name"
         type={"text"}

@@ -20,6 +20,7 @@ import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const EmployementDetails = () => {
   const navigate = useNavigate();
@@ -33,15 +34,18 @@ const EmployementDetails = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getEmployees = async () => {
+      setLoading(true);
       try {
         const res = await AxiosClient.post(`/employee/`);
         setEmployees(res?.data?.data);
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getEmployees();
   }, []);
@@ -80,6 +84,7 @@ const EmployementDetails = () => {
   }, [editState]);
 
   const handleFormSubmit = async (values: ICreateInterview) => {
+    setLoading(true);
     try {
       const payload = {
         interviewerId: values?.interviewerId || null,
@@ -114,6 +119,7 @@ const EmployementDetails = () => {
     } catch (err) {
       toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
 
   const {
@@ -151,6 +157,7 @@ const EmployementDetails = () => {
   };
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <StyledLabel variant="h5">Employement Details</StyledLabel>
       <StyledForm>
         <StyledInput>

@@ -18,6 +18,7 @@ import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
@@ -32,10 +33,12 @@ const DepartmentList = () => {
     pageSize: 10,
   });
   const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
 
   useEffect(() => {
     const getDepartments = async () => {
+      setLoading(true);
       try {
         const payload = {
           isDeleted: false,
@@ -51,6 +54,7 @@ const DepartmentList = () => {
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getDepartments();
   }, [debouncedValue, paginationModel?.page]);
@@ -61,6 +65,7 @@ const DepartmentList = () => {
   };
   const handleDeleteDepartment = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/department/delete/${id}`);
       const filteredPosts = departmentList?.filter((item) => item?.id !== id);
@@ -69,10 +74,12 @@ const DepartmentList = () => {
       toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
 
   return (
     <>
+      {loading && <Loader />}
       <Helmet title="Departments" />
       <DeleteAlert
         deleteModal={deleteModal}

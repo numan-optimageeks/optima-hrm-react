@@ -28,7 +28,7 @@ import { TOKEN, USER } from "src/constants/constants";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 
-const LoginPage = () => {
+const LoginPage = ({ setLoading }) => {
   const theme = useTheme();
   const AxiosClient = useAxios();
   const toast = useToast();
@@ -42,6 +42,7 @@ const LoginPage = () => {
     values: ILogin,
     formikHelpers: FormikHelpers<ILogin>
   ) => {
+    setLoading(true);
     try {
       const payload = {
         email: values?.email,
@@ -63,6 +64,7 @@ const LoginPage = () => {
       formikHelpers?.setSubmitting(false);
       toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
