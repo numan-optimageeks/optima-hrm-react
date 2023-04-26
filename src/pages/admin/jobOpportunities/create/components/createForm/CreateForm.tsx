@@ -24,8 +24,11 @@ import {
   LocationTypes,
   UrgencyLevelTypes,
 } from "../../data/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const CreateForm = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const toast = useToast();
@@ -49,14 +52,12 @@ const CreateForm = () => {
       const payload = {
         ...transformJobFieldValues(values),
         noOfHiring: Number(values?.noOfHiring),
+        userId: user?.id,
       };
       if (editState?.id) {
-        await AxiosClient.put(
-          `/opportunities/update/${editState?.id}`,
-          payload
-        );
+        await AxiosClient.put(`/job-position/update/${editState?.id}`, payload);
       } else {
-        await AxiosClient.post(`/opportunities/create`, payload);
+        await AxiosClient.post(`/job-position/create`, payload);
       }
       navigate("/job-opportunities");
     } catch (err) {

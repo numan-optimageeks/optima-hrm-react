@@ -52,9 +52,9 @@ const LoginPage = ({ setLoading }) => {
 
       const data = res?.data?.data;
       const user = {
-        email: data?.email,
-        full_name: data?.full_name,
-        id: data?.id,
+        email: data?.user?.email,
+        full_name: data?.user?.full_name,
+        id: data?.user?.id,
       };
       LocalStorage.SetItem(TOKEN, data?.token);
       LocalStorage.SetItem(USER, JSON.stringify(user));
