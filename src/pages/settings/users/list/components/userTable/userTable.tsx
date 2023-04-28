@@ -5,9 +5,16 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Stack } from "@mui/material";
-import { StyledBox, StyledTable } from "./userTable.module";
+import { StyledBox, StyledRole, StyledTable } from "./userTable.module";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const UserTable = ({ userList, handleDelete }) => {
+const UserTable = ({
+  userList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -25,29 +32,39 @@ const UserTable = ({ userList, handleDelete }) => {
       minWidth: 250,
     },
     {
+      field: "role",
+      headerName: "Role",
+      disableColumnMenu: true,
+      minWidth: 100,
+      renderCell: (params) => <StyledRole>{params?.row?.role}</StyledRole>,
+    },
+    {
       field: "actions",
       headerName: "Actions",
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => (
-        <>
-          <LinkIcon
-            title="View"
-            onClick={() => navigate("/users/view", { state: params?.row })}
-            component={<VisibilityIcon />}
-          />
-          <LinkIcon
-            title="Edit"
-            onClick={() => navigate("/users/create", { state: params?.row })}
-            component={<CreateIcon />}
-          />
-          <LinkIcon
-            title="Delete"
-            onClick={() => handleDelete(params?.row?.id)}
-            component={<DeleteIcon />}
-          />
-        </>
-      ),
+      renderCell: (params) =>
+        params?.row.role === "admin" ? (
+          <></>
+        ) : (
+          <>
+            <LinkIcon
+              title="View"
+              onClick={() => navigate("/users/view", { state: params?.row })}
+              component={<VisibilityIcon />}
+            />
+            <LinkIcon
+              title="Edit"
+              onClick={() => navigate("/users/create", { state: params?.row })}
+              component={<CreateIcon />}
+            />
+            <LinkIcon
+              title="Delete"
+              onClick={() => handleDelete(params?.row?.id)}
+              component={<DeleteIcon />}
+            />
+          </>
+        ),
       minWidth: 150,
     },
   ];
@@ -56,15 +73,10 @@ const UserTable = ({ userList, handleDelete }) => {
     <StyledBox rows={userList?.length}>
       <StyledTable
         rows={userList}
+        rowCount={pages}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -72,6 +84,7 @@ const UserTable = ({ userList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

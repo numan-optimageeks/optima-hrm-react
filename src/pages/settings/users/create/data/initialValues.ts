@@ -10,12 +10,14 @@ export interface CreateUser {
 export const validations = Yup.object().shape({
   email: Yup.string().required("E-mail is required!"),
   full_name: Yup.string().required("Name is required!"),
+  role: Yup.string().required("Role is required!"),
   password: Yup.string().required("Password is required!"),
 });
 
 export const editValidations = Yup.object().shape({
   email: Yup.string().required("E-mail is required!"),
   full_name: Yup.string().required("Name is required!"),
+  role: Yup.string().required("Role is required!"),
 });
 
 export const initialValues = (): CreateUser => {

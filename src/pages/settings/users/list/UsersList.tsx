@@ -18,6 +18,7 @@ import {
   StyledSearchBox,
   StyledViewRoot,
 } from "src/theme/styles";
+import { useDebounce } from "src/hooks/useDebounce";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -25,6 +26,13 @@ const UserList = () => {
   const toast = useToast();
   const [userList, setUserList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedValue = useDebounce(searchTerm, 400);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
 
@@ -32,7 +40,15 @@ const UserList = () => {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const res = await AxiosClient.post(`/users/`);
+        const payload = {
+          search: debouncedValue || "",
+          page: paginationModel?.page + 1,
+        };
+        const searchRes = await AxiosClient.get(
+          `/users/totalCount/?search=${debouncedValue || null}`
+        );
+        const res = await AxiosClient.post(`/users/`, payload);
+        setPages(searchRes?.data?.data);
         setUserList(res?.data?.data || []);
       } catch (err) {
         toast.error(transformError(err)?.message);
@@ -40,7 +56,7 @@ const UserList = () => {
       setLoading(false);
     };
     getUsers();
-  }, []);
+  }, [debouncedValue, paginationModel?.page]);
 
   const handleDelete = (id: string) => {
     deleteId.current = id;
@@ -77,8 +93,10 @@ const UserList = () => {
             <StyledSearchBox>
               <CustomInput
                 type={"text"}
-                id="search-department"
+                id="search-user"
                 placeholder="Search..."
+                onChange={(e) => setSearchTerm(e?.target?.value)}
+                value={debouncedValue}
               />
             </StyledSearchBox>
             <CustomButton
@@ -89,7 +107,13 @@ const UserList = () => {
             </CustomButton>
           </StyledListHeader>
           <StyledCreateBody>
-            <UserTable userList={userList} handleDelete={handleDelete} />
+            <UserTable
+              userList={userList}
+              handleDelete={handleDelete}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+              pages={pages}
+            />
           </StyledCreateBody>
         </StyledListContainer>
       </StyledViewRoot>

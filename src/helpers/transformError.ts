@@ -16,6 +16,21 @@ export const transformError = (error: unknown): APIError => {
   if (typeof error !== "object" || !error) {
     return InternalError;
   }
+
+  if (
+    error instanceof AxiosError &&
+    "response" in error &&
+    (typeof error.response?.data?.message === "string" ||
+      Array.isArray(error.response?.data?.message))
+  ) {
+    const msg = error.response?.data?.message;
+    return {
+      message: Array.isArray(msg) ? msg[0] : msg,
+      code: error.response?.data?.statusCode,
+      error: error.response?.data?.error,
+    };
+  }
+
   if (error instanceof Error && typeof error?.message === "string") {
     return {
       message: error?.message,
@@ -23,18 +38,5 @@ export const transformError = (error: unknown): APIError => {
       error: "error",
     };
   }
-
-  if (
-    error instanceof AxiosError &&
-    "response" in error &&
-    typeof error.response?.data?.message === "string"
-  ) {
-    return {
-      message: error.response?.data?.message,
-      code: error.response?.data?.statusCode,
-      error: error.response?.data?.error,
-    };
-  }
-
   return InternalError;
 };

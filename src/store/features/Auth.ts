@@ -4,6 +4,7 @@ interface IUser {
   email: string;
   full_name: string;
   id: string;
+  role: string;
 }
 
 export interface ISecretState {
@@ -14,6 +15,7 @@ const defaultUser = {
   email: "",
   full_name: "",
   id: "",
+  role: "",
 };
 const initialState: ISecretState = {
   user: { ...defaultUser },
@@ -29,7 +31,7 @@ export const authSlice = createSlice({
       state.token = action?.payload.token;
     },
     removeUser: (state) => {
-      state.user = { email: "", full_name: "", id: "" };
+      state.user = { email: "", full_name: "", id: "", role: "" };
     },
     updateUser: (state, action) => {
       state.user = action?.payload.user;

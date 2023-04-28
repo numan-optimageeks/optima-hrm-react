@@ -1,4 +1,4 @@
-import { styled, Box } from "@mui/material";
+import { styled, Box, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 interface IStyledBox {
@@ -23,5 +23,14 @@ export const StyledTable = styled(DataGrid)(
        font-weight: 600 !important;
     }
   }
+  `
+);
+
+export const StyledRole = styled(Stack)(
+  ({ theme }) => `
+  text-transform:uppercase !important;
+  font-weight: 600 !important;
+  color:${theme.palette.primary.main} !important;
+ 
   `
 );
