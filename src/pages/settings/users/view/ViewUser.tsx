@@ -1,17 +1,16 @@
 import { useLocation, useNavigate } from "react-router";
 import { IUser } from "../create/data/interface";
 import { Helmet } from "react-helmet-async";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewUser.style";
+import { DetailSection, StyledBody } from "./ViewUser.style";
 import BackButton from "src/components/BackButton/BackButton";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewUser = () => {
   const location = useLocation();
@@ -22,10 +21,10 @@ const ViewUser = () => {
     <>
       <Helmet title="View User" />
 
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/users"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View User</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View User</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Name:</Typography>
@@ -48,8 +47,8 @@ const ViewUser = () => {
               </CustomButton>
             </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

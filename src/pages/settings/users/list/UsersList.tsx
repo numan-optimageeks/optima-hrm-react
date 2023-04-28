@@ -8,7 +8,6 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./Users.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
@@ -18,6 +17,7 @@ import UserTable from "./components/userTable/userTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const UserList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteUser}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Users List</Typography>
@@ -92,7 +92,7 @@ const UserList = () => {
             <UserTable userList={userList} handleDelete={handleDelete} />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

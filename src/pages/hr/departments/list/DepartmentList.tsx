@@ -5,7 +5,6 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./DepartmentList.style";
 import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
@@ -19,6 +18,7 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const DepartmentList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteDepartment}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Departments List</Typography>
@@ -116,7 +116,7 @@ const DepartmentList = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

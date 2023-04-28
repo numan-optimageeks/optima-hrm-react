@@ -8,7 +8,6 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./InterviewList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
@@ -18,6 +17,7 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const InterviewList = () => {
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const InterviewList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteInterview}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Interview List</Typography>
@@ -107,7 +107,7 @@ const InterviewList = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

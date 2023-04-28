@@ -1,17 +1,16 @@
 import { useLocation, useNavigate } from "react-router";
 import { ICreateJob } from "../create/data/initialValues";
 import { Helmet } from "react-helmet-async";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewJob.style";
+import { DetailSection, StyledBody } from "./ViewJob.style";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewJob = () => {
   const location = useLocation();
@@ -20,10 +19,10 @@ const ViewJob = () => {
   return (
     <>
       <Helmet title="View Position" />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/job-opportunities"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Position</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Position</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>E-mail:</Typography>
@@ -131,8 +130,8 @@ const ViewJob = () => {
               </CustomButton>
             </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
       <Footer />
     </>
   );

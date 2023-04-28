@@ -7,7 +7,6 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./InterviewDetails.style";
 import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
@@ -16,6 +15,7 @@ import DetailsTable from "./components/detailsTable/DetailsTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const InterviewDetails = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const InterviewDetails = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteInterview}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Interview List</Typography>
@@ -100,7 +100,7 @@ const InterviewDetails = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

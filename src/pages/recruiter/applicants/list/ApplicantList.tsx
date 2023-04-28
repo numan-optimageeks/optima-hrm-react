@@ -12,13 +12,13 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./ApplicantList.style";
 import ApplicantTable from "./components/ApplicantTable/ApplicantTable";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const ApplicantList = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const ApplicantList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteApplicant}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Applicant List</Typography>
@@ -114,7 +114,7 @@ const ApplicantList = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

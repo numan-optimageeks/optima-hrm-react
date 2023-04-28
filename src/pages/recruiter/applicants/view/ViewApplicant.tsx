@@ -6,13 +6,12 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
 import { IApplicant } from "../create/data/interface";
 import InterviewDetails from "./components/interviewDetails/InterviewDetails";
+import { DetailSection, StyledBody } from "./ViewApplicant.style";
 import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewApplicant.style";
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewApplicant = () => {
   const location = useLocation();
@@ -23,10 +22,10 @@ const ViewApplicant = () => {
     <>
       <Helmet title="View Applicant" />
 
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/applicants"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Applicant</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Applicant</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Name:</Typography>
@@ -81,8 +80,8 @@ const ViewApplicant = () => {
               </CustomButton>
             </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

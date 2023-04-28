@@ -1,17 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewDesignation.style";
+import { DetailSection, StyledBody } from "./ViewDesignation.style";
 import { useLocation, useNavigate } from "react-router";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import BackButton from "src/components/BackButton/BackButton";
 import { IDesignation } from "../../departments/create/data/interface";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewDepartment = () => {
   const location = useLocation();
@@ -22,10 +21,10 @@ const ViewDepartment = () => {
     <>
       <Helmet title="View Designation" />
 
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/designations"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Designation</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Designation</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Designation:</Typography>
@@ -54,8 +53,8 @@ const ViewDepartment = () => {
               </CustomButton>
             </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

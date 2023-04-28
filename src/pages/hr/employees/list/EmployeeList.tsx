@@ -8,7 +8,6 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./EmployeeList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
@@ -19,6 +18,7 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
+import { StyledViewRoot } from "src/theme/styles";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const EmployeeList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteEmployee}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Employees List</Typography>
@@ -114,7 +114,7 @@ const EmployeeList = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

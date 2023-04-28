@@ -1,11 +1,5 @@
 import { Container, Box, styled } from "@mui/material";
 
-export const StyledRoot = styled(Container)(
-  ({ theme }) => `
-  padding:20px;
-  min-height:calc(100vh - 180px);
-  `
-);
 export const StyledContainer = styled(Box)(
   ({ theme }) => `
      background-color: ${theme.colors.alpha.trueWhite[70]};

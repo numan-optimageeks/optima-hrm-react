@@ -13,12 +13,12 @@ import {
   StyledBody,
   StyledContainer,
   StyledHeader,
-  StyledRoot,
 } from "./JobList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import JobsListTable from "./components/jobsList/JobsTableList";
+import { StyledViewRoot } from "src/theme/styles";
 
 const JobList = () => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const JobList = () => {
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteJob}
       />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <StyledContainer>
           <StyledHeader>
             <Typography variant="h5">Jobs List</Typography>
@@ -116,7 +116,7 @@ const JobList = () => {
             />
           </StyledBody>
         </StyledContainer>
-      </StyledRoot>
+      </StyledViewRoot>
       <Footer />
     </>
   );

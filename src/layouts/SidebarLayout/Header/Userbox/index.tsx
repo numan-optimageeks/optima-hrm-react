@@ -15,6 +15,7 @@ import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
 import { TOKEN, USER } from "src/constants/constants";
 import { removeUser } from "src/store/features/Auth";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -53,6 +54,7 @@ const UserBoxDescription = styled(Typography)(
 
 const HeaderUserbox = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = {
     name: "Admin",
     avatar: "/static/images/avatars/3.jpg",
@@ -73,6 +75,7 @@ const HeaderUserbox = () => {
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(USER);
     dispatch(removeUser());
+    navigate("/login");
   };
 
   return (

@@ -1,14 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./CreateJob.style";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
 import CreateForm from "./components/createForm/CreateForm";
+import {
+  StyledCreateBody,
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const CreateJob = () => {
   const location = useLocation();
@@ -17,17 +17,17 @@ const CreateJob = () => {
   return (
     <>
       <Helmet title={`${editState?.id ? "Edit" : "Create"} Job`} />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/job-opportunities"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">
             {`${editState?.id ? "Edit" : "Create"} Job`}
-          </StyledLabel>
-          <StyledBody>
+          </StyledViewLabel>
+          <StyledCreateBody>
             <CreateForm />
-          </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+          </StyledCreateBody>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>
