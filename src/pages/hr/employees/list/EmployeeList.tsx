@@ -3,12 +3,6 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import {
-  SearchBox,
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./EmployeeList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
@@ -18,7 +12,13 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledSearchBox,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const EmployeeList = () => {
   const navigate = useNavigate();
@@ -85,10 +85,10 @@ const EmployeeList = () => {
         handleYes={handleDeleteEmployee}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Employees List</Typography>
-            <SearchBox>
+            <StyledSearchBox>
               <CustomInput
                 type={"text"}
                 id="search-designation"
@@ -96,15 +96,15 @@ const EmployeeList = () => {
                 onChange={(e) => setSearchTerm(e?.target?.value)}
                 value={debouncedValue}
               />
-            </SearchBox>
+            </StyledSearchBox>
             <CustomButton
               variant="contained"
               onClick={() => navigate("/employees/create")}
             >
               Create Employee
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <EmployeeTable
               employeeList={employeeList}
               handleDelete={handleDelete}
@@ -112,8 +112,8 @@ const EmployeeList = () => {
               setPaginationModel={setPaginationModel}
               pages={pages}
             />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>

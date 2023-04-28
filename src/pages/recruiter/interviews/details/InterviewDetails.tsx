@@ -3,11 +3,6 @@ import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./InterviewDetails.style";
 import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
@@ -15,7 +10,12 @@ import DetailsTable from "./components/detailsTable/DetailsTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const InterviewDetails = () => {
   const navigate = useNavigate();
@@ -79,8 +79,8 @@ const InterviewDetails = () => {
         handleYes={handleDeleteInterview}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Interview List</Typography>
             <CustomButton
               variant="contained"
@@ -92,14 +92,14 @@ const InterviewDetails = () => {
             >
               Schedule New
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <DetailsTable
               applicantList={applicantList}
               handleDelete={handleDelete}
             />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>

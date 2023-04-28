@@ -8,17 +8,17 @@ import { transformError } from "src/helpers/transformError";
 import { useAxios } from "src/hooks/useAxios";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
-import {
-  SearchBox,
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./JobList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import JobsListTable from "./components/jobsList/JobsTableList";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledSearchBox,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const JobList = () => {
   const navigate = useNavigate();
@@ -87,10 +87,10 @@ const JobList = () => {
         handleYes={handleDeleteJob}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Jobs List</Typography>
-            <SearchBox>
+            <StyledSearchBox>
               <CustomInput
                 type={"text"}
                 id="search-job"
@@ -98,15 +98,15 @@ const JobList = () => {
                 onChange={(e) => setSearchTerm(e?.target?.value)}
                 value={debouncedValue}
               />
-            </SearchBox>
+            </StyledSearchBox>
             <CustomButton
               variant="contained"
               onClick={() => navigate("/job-opportunities/create")}
             >
               Create Job Opportunity
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <JobsListTable
               jobsList={jobsList}
               handleDelete={handleDelete}
@@ -114,8 +114,8 @@ const JobList = () => {
               setPaginationModel={setPaginationModel}
               pages={pages}
             />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>

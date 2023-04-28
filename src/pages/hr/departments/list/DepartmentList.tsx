@@ -1,11 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  SearchBox,
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./DepartmentList.style";
 import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import { useNavigate } from "react-router";
@@ -18,7 +12,13 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledSearchBox,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const DepartmentList = () => {
   const navigate = useNavigate();
@@ -87,10 +87,10 @@ const DepartmentList = () => {
         handleYes={handleDeleteDepartment}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Departments List</Typography>
-            <SearchBox>
+            <StyledSearchBox>
               <CustomInput
                 type={"text"}
                 id="search-department"
@@ -98,15 +98,15 @@ const DepartmentList = () => {
                 onChange={(e) => setSearchTerm(e?.target?.value)}
                 value={debouncedValue}
               />
-            </SearchBox>
+            </StyledSearchBox>
             <CustomButton
               variant="contained"
               onClick={() => navigate("/departments/create")}
             >
               Create Department
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <DepartmentTable
               departmentList={departmentList}
               handleDelete={handleDelete}
@@ -114,8 +114,8 @@ const DepartmentList = () => {
               setPaginationModel={setPaginationModel}
               pages={pages}
             />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>

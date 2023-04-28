@@ -3,12 +3,6 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import {
-  SearchBox,
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./InterviewList.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import Footer from "src/components/Footer";
@@ -17,7 +11,13 @@ import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledSearchBox,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const InterviewList = () => {
   const navigate = useNavigate();
@@ -83,10 +83,10 @@ const InterviewList = () => {
         handleYes={handleDeleteInterview}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Interview List</Typography>
-            <SearchBox>
+            <StyledSearchBox>
               <CustomInput
                 type={"text"}
                 id="search-interview"
@@ -94,10 +94,10 @@ const InterviewList = () => {
                 onChange={(e) => setSearchTerm(e?.target?.value)}
                 value={debouncedValue}
               />
-            </SearchBox>
+            </StyledSearchBox>
             <div />
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <InterviewTable
               applicantList={applicantList}
               handleDelete={handleDelete}
@@ -105,8 +105,8 @@ const InterviewList = () => {
               setPaginationModel={setPaginationModel}
               pages={pages}
             />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>

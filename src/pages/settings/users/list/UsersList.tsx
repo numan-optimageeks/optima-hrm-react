@@ -3,12 +3,6 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import {
-  SearchBox,
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-} from "./Users.style";
 import { Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
@@ -17,7 +11,13 @@ import UserTable from "./components/userTable/userTable";
 import { transformError } from "src/helpers/transformError";
 import { useToast } from "src/hooks/useToast";
 import Loader from "src/components/Loader/Loader";
-import { StyledViewRoot } from "src/theme/styles";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledSearchBox,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -71,27 +71,27 @@ const UserList = () => {
         handleYes={handleDeleteUser}
       />
       <StyledViewRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Users List</Typography>
-            <SearchBox>
+            <StyledSearchBox>
               <CustomInput
                 type={"text"}
                 id="search-department"
                 placeholder="Search..."
               />
-            </SearchBox>
+            </StyledSearchBox>
             <CustomButton
               variant="contained"
               onClick={() => navigate("/users/create")}
             >
               Create User
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <UserTable userList={userList} handleDelete={handleDelete} />
-          </StyledBody>
-        </StyledContainer>
+          </StyledCreateBody>
+        </StyledListContainer>
       </StyledViewRoot>
       <Footer />
     </>
