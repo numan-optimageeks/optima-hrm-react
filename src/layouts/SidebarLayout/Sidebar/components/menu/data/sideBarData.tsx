@@ -54,7 +54,7 @@ export const SideBarData = (iconColor) => {
       ],
     },
     {
-      title: "Admin",
+      title: "Positions",
       icon: <SupervisorAccountIcon sx={iconColor} />,
       menu: [
         {

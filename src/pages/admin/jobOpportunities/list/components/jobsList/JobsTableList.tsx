@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { StyledBox, StyledTable } from "./JobsTableList.style";
+import { StyledBox, StyledStatus, StyledTable } from "./JobsTableList.style";
 import CustomPagination from "src/components/CustomPagination/CustomPagination";
 import { useNavigate } from "react-router";
 import { GridColDef } from "@mui/x-data-grid";
@@ -7,6 +7,13 @@ import { LinkIcon } from "src/pages/hr/departments/list/components/departmentTab
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
+import AssignPosition from "../assignPosition/AssignPosition";
+import { useEffect, useState } from "react";
+import { useAxios } from "src/hooks/useAxios";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
 const JobsListTable = ({
   jobsList,
@@ -15,7 +22,23 @@ const JobsListTable = ({
   setPaginationModel,
   pages,
 }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const AxiosClient = useAxios();
+  const toast = useToast();
   const navigate = useNavigate();
+  const [hrList, setHrList] = useState([]);
+
+  useEffect(() => {
+    const getHrList = async () => {
+      try {
+        const res = await AxiosClient.get(`/users/hrList`);
+        setHrList(res?.data?.data);
+      } catch (error) {
+        toast.error(transformError(error)?.message);
+      }
+    };
+    getHrList();
+  }, []);
 
   const columns: GridColDef[] = [
     {
@@ -47,6 +70,16 @@ const JobsListTable = ({
       minWidth: 150,
     },
     {
+      field: "status",
+      headerName: "Status",
+      disableColumnMenu: true,
+      flex: 1,
+      minWidth: 150,
+      renderCell: ({ row }) => (
+        <StyledStatus value={row?.status}>{row?.status}</StyledStatus>
+      ),
+    },
+    {
       field: "actions",
       headerName: "Actions",
       sortable: false,
@@ -67,11 +100,15 @@ const JobsListTable = ({
             }
             component={<CreateIcon />}
           />
-          <LinkIcon
-            title="Delete"
-            onClick={() => handleDelete(params?.row?.id)}
-            component={<DeleteIcon />}
-          />
+          {user?.role === "admin" ? (
+            <LinkIcon
+              title="Delete"
+              onClick={() => handleDelete(params?.row?.id)}
+              component={<DeleteIcon />}
+            />
+          ) : (
+            <AssignPosition hrList={hrList} />
+          )}
         </>
       ),
       minWidth: 150,

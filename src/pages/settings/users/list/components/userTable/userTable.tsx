@@ -7,6 +7,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Stack } from "@mui/material";
 import { StyledBox, StyledRole, StyledTable } from "./userTable.module";
 import CustomPagination from "src/components/CustomPagination/CustomPagination";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const UserTable = ({
   userList,
@@ -15,6 +17,7 @@ const UserTable = ({
   setPaginationModel,
   pages,
 }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -68,13 +71,19 @@ const UserTable = ({
       minWidth: 150,
     },
   ];
+  const getColumns = () => {
+    if (user?.role === "hr") {
+      return columns?.filter((col) => col?.field !== "actions");
+    }
+    return columns;
+  };
 
   return (
     <StyledBox rows={userList?.length}>
       <StyledTable
         rows={userList}
         rowCount={pages}
-        columns={columns}
+        columns={getColumns()}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick

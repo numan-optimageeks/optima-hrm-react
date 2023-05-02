@@ -11,11 +11,19 @@ import {
   StyledViewLabel,
   StyledViewRoot,
 } from "src/theme/styles";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const ViewUser = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const data: IUser = location?.state;
+
+  useEffect(() => {
+    if (user?.role !== "admin") navigate("/users");
+  }, []);
 
   return (
     <>

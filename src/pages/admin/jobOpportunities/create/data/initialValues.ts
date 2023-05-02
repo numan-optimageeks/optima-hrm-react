@@ -16,6 +16,7 @@ export interface ICreateJob {
   technicalSpecification?: string;
   otherRequirements?: string;
   requestedBy?: string;
+  status?: string;
 }
 
 export const validations = Yup.object().shape({
@@ -34,6 +35,7 @@ export const validations = Yup.object().shape({
   ),
   otherRequirements: Yup.string().required("Other Requirements is required!"),
   requestedBy: Yup.string().required("Requested By is required!"),
+  status: Yup.string().required("Status is required!"),
 });
 
 export const initialValues = (): ICreateJob => {

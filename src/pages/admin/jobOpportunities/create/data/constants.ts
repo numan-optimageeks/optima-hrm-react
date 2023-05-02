@@ -115,3 +115,26 @@ export const UrgencyLevelTypes = [
     value: "Normal",
   },
 ];
+
+export const JobStatusTypes = [
+  {
+    label: "",
+    value: "",
+  },
+  {
+    label: "Open",
+    value: "open",
+  },
+  {
+    label: "Hold",
+    value: "hold",
+  },
+  {
+    label: "Cancelled",
+    value: "cancelled",
+  },
+  {
+    label: "Closed",
+    value: "closed",
+  },
+];

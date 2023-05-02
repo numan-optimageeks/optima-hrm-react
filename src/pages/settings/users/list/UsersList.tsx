@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
@@ -19,8 +19,11 @@ import {
   StyledViewRoot,
 } from "src/theme/styles";
 import { useDebounce } from "src/hooks/useDebounce";
+import { RootState } from "src/store/store";
+import { useSelector } from "react-redux";
 
 const UserList = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const toast = useToast();
@@ -99,12 +102,16 @@ const UserList = () => {
                 value={debouncedValue}
               />
             </StyledSearchBox>
-            <CustomButton
-              variant="contained"
-              onClick={() => navigate("/users/create")}
-            >
-              Create User
-            </CustomButton>
+            {user?.role === "admin" ? (
+              <CustomButton
+                variant="contained"
+                onClick={() => navigate("/users/create")}
+              >
+                Create User
+              </CustomButton>
+            ) : (
+              <Stack />
+            )}
           </StyledListHeader>
           <StyledCreateBody>
             <UserTable

@@ -21,6 +21,7 @@ import {
   DesignationsTypes,
   EmployementTypes,
   ExperianceTypes,
+  JobStatusTypes,
   LocationTypes,
   UrgencyLevelTypes,
 } from "../../data/constants";
@@ -302,7 +303,7 @@ const CreateForm = () => {
       </StyledForm>
 
       <StyledForm>
-        <StyledFullInput>
+        <StyledInput>
           <CustomInput
             label="Requested By"
             type={"text"}
@@ -316,7 +317,31 @@ const CreateForm = () => {
             error={isError("requestedBy", errors, touched)}
             {...getFieldProps("requestedBy")}
           />
-        </StyledFullInput>
+        </StyledInput>
+        <StyledInput>
+          <CustomInput
+            select
+            label="Status"
+            id="status"
+            placeholder="Status"
+            helperText={
+              isError("status", errors, touched)
+                ? isErrorMessage("status", errors)
+                : ""
+            }
+            error={isError("status", errors, touched)}
+            {...getFieldProps("status")}
+            SelectProps={{
+              native: true,
+            }}
+          >
+            {JobStatusTypes?.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </CustomInput>
+        </StyledInput>
       </StyledForm>
 
       <StyledForm>

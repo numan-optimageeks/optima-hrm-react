@@ -8,7 +8,7 @@ import { transformError } from "src/helpers/transformError";
 import { useAxios } from "src/hooks/useAxios";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useToast } from "src/hooks/useToast";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import JobsListTable from "./components/jobsList/JobsTableList";
@@ -19,9 +19,12 @@ import {
   StyledSearchBox,
   StyledViewRoot,
 } from "src/theme/styles";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const JobList = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const AxiosClient = useAxios();
   const toast = useToast();
   const [jobsList, setJobsList] = useState([]);
@@ -99,12 +102,16 @@ const JobList = () => {
                 value={debouncedValue}
               />
             </StyledSearchBox>
-            <CustomButton
-              variant="contained"
-              onClick={() => navigate("/job-opportunities/create")}
-            >
-              Create Job Opportunity
-            </CustomButton>
+            {user?.role === "admin" ? (
+              <CustomButton
+                variant="contained"
+                onClick={() => navigate("/job-opportunities/create")}
+              >
+                Create Job Opportunity
+              </CustomButton>
+            ) : (
+              <Stack />
+            )}
           </StyledListHeader>
           <StyledCreateBody>
             <JobsListTable
