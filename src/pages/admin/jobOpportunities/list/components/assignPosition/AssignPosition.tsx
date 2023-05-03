@@ -35,12 +35,19 @@ const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
     const newSelected = selected?.filter(
       (id) => !selectedPosition?.some((item) => item?.userId === id)
     );
-    if (!isAssignedToMe() && assignMe) newSelected?.push(user?.id);
+    if (!isAssignedToMe() && assignMe) {
+      newSelected?.push(user?.id);
+    }
+
     const deSelected = selectedPosition?.filter(
       (val) => !selected?.includes(val?.userId)
     );
     const deSelectedIds = deSelected?.map((val) => val?.id);
-    if (isAssignedToMe() && assignMe) deSelectedIds?.push(user?.id);
+    if (isAssignedToMe() && assignMe) {
+      deSelectedIds?.push(
+        selectedPosition?.find((val) => val?.userId === user?.id)?.id
+      );
+    }
 
     const payload = {
       userId: newSelected,
@@ -54,11 +61,12 @@ const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
       (pos) => !deSelectedIds?.includes(pos.id)
     );
     const updated = [...filterActive, ...data];
+    const updatedIds = updated?.map((val) => val?.userId);
     const jobsCopy = [...jobsList];
     const target = jobsCopy?.find((job) => job?.id === position?.id);
     target.assignedPositions = [...updated];
     setJobsList(jobsCopy);
-
+    setSelected([...updatedIds]);
     setAnchorEl(null);
   };
   const handleAssignMe = () => {
