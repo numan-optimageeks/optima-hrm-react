@@ -8,7 +8,6 @@ import {
   Checkbox,
 } from "@mui/material";
 import { StyledAssignBtn, StyledMenu } from "./AssignPosition.style";
-import { IUser } from "src/pages/settings/users/create/data/interface";
 import { useAxios } from "src/hooks/useAxios";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
@@ -18,7 +17,6 @@ const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
   const AxiosClient = useAxios();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selected, setSelected] = useState([]);
-  const [initialIds, setInitialIds] = useState([]);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -29,74 +27,57 @@ const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
       });
       const uniqueIds = new Set([...ids]);
       setSelected([...uniqueIds]);
-      setInitialIds(JSON.parse(JSON.stringify([...uniqueIds])));
     }
   }, []);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event?.currentTarget);
-  };
   const handleClose = async (assignMe = false) => {
-    if (selected?.length > -1 || assignMe) {
-      const payload = {
-        userId: selected,
-        positionId: position?.id,
-        deSelected: [],
-      };
-      if (assignMe) {
-        const filtered = selected?.filter((userId) => userId !== user?.id);
-        filtered.push(user?.id);
-        payload.userId = filtered;
-      }
-      const deSelected = [];
-      const newSelected = [];
-      initialIds?.forEach((userId) => {
-        if (!selected?.includes(userId)) deSelected.push(userId);
-      });
-      selected?.forEach((userId) => {
-        if (!initialIds?.includes(userId)) newSelected.push(userId);
-      });
-      payload.deSelected = deSelected;
-      payload.userId = newSelected;
-      const res = await AxiosClient.post(`/assign-position/create`, payload);
-      const data = res?.data?.data;
-      const selectedPosition = jobsList?.find(
-        (job) => job?.id === data[0]?.positionId
-      );
-      data.forEach((val) => {
-        const index = selectedPosition?.assignedPositions?.findIndex(
-          (item) => item?.userId === val?.userId
-        );
-        if (index > 0) {
-          selectedPosition?.assignedPositions?.splice(index, 1, val);
-        } else {
-          selectedPosition?.assignedPositions?.push(val);
-        }
-      });
-      console.log("deSelected", deSelected);
-      console.log(
-        "selectedPosition?.assignedPositions",
-        jobsList.assignedPositions
-      );
-      const activeIds = jobsList?.assignedPositions?.filter(
-        (element) => !deSelected?.includes(element?.userId)
-      );
-      console.log(activeIds, "aaactive ids");
-      jobsList.assignedPositions = activeIds;
-    }
+    const selectedPosition = position?.assignedPositions || [];
+    const newSelected = selected?.filter(
+      (id) => !selectedPosition?.some((item) => item?.userId === id)
+    );
+    if (!isAssignedToMe() && assignMe) newSelected?.push(user?.id);
+    const deSelected = selectedPosition?.filter(
+      (val) => !selected?.includes(val?.userId)
+    );
+    const deSelectedIds = deSelected?.map((val) => val?.id);
+    if (isAssignedToMe() && assignMe) deSelectedIds?.push(user?.id);
+
+    const payload = {
+      userId: newSelected,
+      positionId: position?.id,
+      deSelected: deSelectedIds,
+    };
+
+    const res = await AxiosClient.post(`/assign-position/create`, payload);
+    const data = res?.data?.data;
+    const filterActive = selectedPosition?.filter(
+      (pos) => !deSelectedIds?.includes(pos.id)
+    );
+    const updated = [...filterActive, ...data];
+    const jobsCopy = [...jobsList];
+    const target = jobsCopy?.find((job) => job?.id === position?.id);
+    target.assignedPositions = [...updated];
+    setJobsList(jobsCopy);
+
     setAnchorEl(null);
-    setJobsList([...jobsList]);
   };
   const handleAssignMe = () => {
     handleClose(true);
   };
   const handleItemClick = (id: number) => {
-    if (selected.includes(id)) {
+    if (selected?.includes(id)) {
       const filtered = selected?.filter((item) => item !== id);
       setSelected(filtered);
     } else {
       setSelected([...selected, id]);
     }
+  };
+  const isAssignedToMe = () => {
+    return position?.assignedPositions?.some((val) => val?.userId === user?.id);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event?.currentTarget);
   };
   return (
     <>
@@ -127,7 +108,9 @@ const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
           },
         }}
       >
-        <StyledAssignBtn onClick={handleAssignMe}>Assign to me</StyledAssignBtn>
+        <StyledAssignBtn onClick={handleAssignMe}>
+          {isAssignedToMe() ? "Unassign from me" : "Assign to me"}
+        </StyledAssignBtn>
         <Divider />
 
         {hrList?.map((option) => (

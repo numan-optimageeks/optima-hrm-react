@@ -33,7 +33,9 @@ const JobsListTable = ({
     const getHrList = async () => {
       try {
         const res = await AxiosClient.get(`/users/hrList`);
-        setHrList(res?.data?.data);
+        const data = res?.data?.data;
+        const otherHrs = data?.filter((h) => h?.id !== user?.id);
+        setHrList(otherHrs);
       } catch (error) {
         toast.error(transformError(error)?.message);
       }
