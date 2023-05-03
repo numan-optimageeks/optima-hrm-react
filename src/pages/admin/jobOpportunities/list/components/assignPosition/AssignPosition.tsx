@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Tooltip,
@@ -9,20 +9,86 @@ import {
 } from "@mui/material";
 import { StyledAssignBtn, StyledMenu } from "./AssignPosition.style";
 import { IUser } from "src/pages/settings/users/create/data/interface";
+import { useAxios } from "src/hooks/useAxios";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
-interface IAssignPosition {
-  hrList: IUser[];
-}
-
-const AssignPosition: React.FC<IAssignPosition> = ({ hrList }) => {
+const AssignPosition = ({ hrList, position, jobsList, setJobsList }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const AxiosClient = useAxios();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selected, setSelected] = useState([]);
+  const [initialIds, setInitialIds] = useState([]);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (position && position?.assignedPositions?.length > 0) {
+      const ids = [];
+      position?.assignedPositions?.forEach((singlePosition) => {
+        ids.push(singlePosition?.userId);
+      });
+      const uniqueIds = new Set([...ids]);
+      setSelected([...uniqueIds]);
+      setInitialIds(JSON.parse(JSON.stringify([...uniqueIds])));
+    }
+  }, []);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event?.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = async (assignMe = false) => {
+    if (selected?.length > -1 || assignMe) {
+      const payload = {
+        userId: selected,
+        positionId: position?.id,
+        deSelected: [],
+      };
+      if (assignMe) {
+        const filtered = selected?.filter((userId) => userId !== user?.id);
+        filtered.push(user?.id);
+        payload.userId = filtered;
+      }
+      const deSelected = [];
+      const newSelected = [];
+      initialIds?.forEach((userId) => {
+        if (!selected?.includes(userId)) deSelected.push(userId);
+      });
+      selected?.forEach((userId) => {
+        if (!initialIds?.includes(userId)) newSelected.push(userId);
+      });
+      payload.deSelected = deSelected;
+      payload.userId = newSelected;
+      const res = await AxiosClient.post(`/assign-position/create`, payload);
+      const data = res?.data?.data;
+      const selectedPosition = jobsList?.find(
+        (job) => job?.id === data[0]?.positionId
+      );
+      data.forEach((val) => {
+        const index = selectedPosition?.assignedPositions?.findIndex(
+          (item) => item?.userId === val?.userId
+        );
+        if (index > 0) {
+          selectedPosition?.assignedPositions?.splice(index, 1, val);
+        } else {
+          selectedPosition?.assignedPositions?.push(val);
+        }
+      });
+      console.log("deSelected", deSelected);
+      console.log(
+        "selectedPosition?.assignedPositions",
+        jobsList.assignedPositions
+      );
+      const activeIds = jobsList?.assignedPositions?.filter(
+        (element) => !deSelected?.includes(element?.userId)
+      );
+      console.log(activeIds, "aaactive ids");
+      jobsList.assignedPositions = activeIds;
+    }
     setAnchorEl(null);
+    setJobsList([...jobsList]);
+  };
+  const handleAssignMe = () => {
+    handleClose(true);
   };
   const handleItemClick = (id: number) => {
     if (selected.includes(id)) {
@@ -53,7 +119,7 @@ const AssignPosition: React.FC<IAssignPosition> = ({ hrList }) => {
         }}
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose(false)}
         PaperProps={{
           style: {
             maxHeight: 300,
@@ -61,7 +127,7 @@ const AssignPosition: React.FC<IAssignPosition> = ({ hrList }) => {
           },
         }}
       >
-        <StyledAssignBtn onClick={() => {}}>Assign to me</StyledAssignBtn>
+        <StyledAssignBtn onClick={handleAssignMe}>Assign to me</StyledAssignBtn>
         <Divider />
 
         {hrList?.map((option) => (

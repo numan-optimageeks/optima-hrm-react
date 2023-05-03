@@ -21,6 +21,7 @@ const JobsListTable = ({
   paginationModel,
   setPaginationModel,
   pages,
+  setJobsList,
 }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const AxiosClient = useAxios();
@@ -107,7 +108,12 @@ const JobsListTable = ({
               component={<DeleteIcon />}
             />
           ) : (
-            <AssignPosition hrList={hrList} />
+            <AssignPosition
+              hrList={hrList}
+              position={params?.row}
+              jobsList={jobsList}
+              setJobsList={setJobsList}
+            />
           )}
         </>
       ),

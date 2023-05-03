@@ -38,6 +38,7 @@ const JobList = () => {
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
+  console.log("jobsList", jobsList);
 
   useEffect(() => {
     const getJobs = async () => {
@@ -120,6 +121,7 @@ const JobList = () => {
               paginationModel={paginationModel}
               setPaginationModel={setPaginationModel}
               pages={pages}
+              setJobsList={setJobsList}
             />
           </StyledCreateBody>
         </StyledListContainer>
