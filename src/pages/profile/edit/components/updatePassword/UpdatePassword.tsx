@@ -15,11 +15,14 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import { isError, isErrorMessage } from "src/utils/utils";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const UpdatePassword = ({ setLoading }) => {
   const AxiosClient = useAxios();
   const toast = useToast();
   const [showPassword, setShowPassword] = useState(showPasswordState());
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleClickShowPassword = (type: string) => {
     setShowPassword((show) => {
@@ -33,6 +36,15 @@ const UpdatePassword = ({ setLoading }) => {
   ) => {
     setLoading(true);
     try {
+      const payload = {
+        password: values?.password || "",
+        newPassword: values?.newPassword || "",
+        confirmPassword: values?.confirmPassword || "",
+      };
+      await AxiosClient.put(
+        `${process.env.REACT_APP_MAILING_BACKEND}/users/updatePassword/${user?.id}`,
+        payload
+      );
     } catch (err) {
       formikHelpers?.setSubmitting(false);
       toast.error(transformError(err)?.message);
