@@ -46,28 +46,29 @@ const UserTable = ({
       headerName: "Actions",
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) =>
-        params?.row.role === "admin" ? (
-          <></>
-        ) : (
-          <>
-            <LinkIcon
-              title="View"
-              onClick={() => navigate("/users/view", { state: params?.row })}
-              component={<VisibilityIcon />}
-            />
-            <LinkIcon
-              title="Edit"
-              onClick={() => navigate("/users/create", { state: params?.row })}
-              component={<CreateIcon />}
-            />
+      renderCell: (params) => (
+        <>
+          <LinkIcon
+            title="View"
+            onClick={() => navigate("/users/view", { state: params?.row })}
+            component={<VisibilityIcon />}
+          />
+          <LinkIcon
+            title="Edit"
+            onClick={() => navigate("/users/create", { state: params?.row })}
+            component={<CreateIcon />}
+          />
+          {params?.row.role === "admin" ? (
+            <></>
+          ) : (
             <LinkIcon
               title="Delete"
               onClick={() => handleDelete(params?.row?.id)}
               component={<DeleteIcon />}
             />
-          </>
-        ),
+          )}
+        </>
+      ),
       minWidth: 150,
     },
   ];

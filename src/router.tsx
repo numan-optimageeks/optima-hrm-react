@@ -88,6 +88,12 @@ const ViewJob = Loader(
 const CreateJob = Loader(
   lazy(() => import("src/pages/admin/jobOpportunities/create/CreateJob"))
 );
+const ViewProfile = Loader(
+  lazy(() => import("src/pages/profile/view/ViewProfile"))
+);
+const EditProfile = Loader(
+  lazy(() => import("src/pages/profile/edit/EditProfile"))
+);
 
 const routes: RouteObject[] = [
   {
@@ -212,6 +218,19 @@ const routes: RouteObject[] = [
                 element: <CreateUser />,
               },
               { path: "view", element: <ViewUser /> },
+            ],
+          },
+          {
+            path: "profile",
+            children: [
+              {
+                index: true,
+                element: <ViewProfile />,
+              },
+              {
+                path: "edit",
+                element: <EditProfile />,
+              },
             ],
           },
         ],

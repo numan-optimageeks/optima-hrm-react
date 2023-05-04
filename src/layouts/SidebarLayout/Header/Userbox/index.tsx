@@ -6,6 +6,9 @@ import {
   Divider,
   Hidden,
   lighten,
+  List,
+  ListItem,
+  ListItemText,
   Popover,
   Typography,
 } from "@mui/material";
@@ -17,6 +20,8 @@ import { removeUser } from "src/store/features/Auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RootState } from "src/store/store";
+import { NavLink } from "react-router-dom";
+import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -124,7 +129,17 @@ const HeaderUserbox = () => {
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
-
+        <List sx={{ p: 1 }} component="nav">
+          <ListItem
+            button
+            to="/profile"
+            component={NavLink}
+            onClick={handleClose}
+          >
+            <AccountBoxTwoToneIcon fontSize="small" />
+            <ListItemText primary="My Profile" />
+          </ListItem>
+        </List>
         <Divider />
         <Box sx={{ m: 1 }}>
           <Button color="primary" fullWidth onClick={logoutUser}>

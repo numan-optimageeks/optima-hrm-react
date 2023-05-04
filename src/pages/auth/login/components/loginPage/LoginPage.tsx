@@ -56,6 +56,7 @@ const LoginPage = ({ setLoading }) => {
         full_name: data?.user?.full_name,
         id: data?.user?.id,
         role: data?.user?.role,
+        image: data?.user?.image,
       };
       LocalStorage.SetItem(TOKEN, data?.token);
       LocalStorage.SetItem(USER, JSON.stringify(user));
