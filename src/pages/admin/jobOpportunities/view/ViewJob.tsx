@@ -1,7 +1,13 @@
 import { useLocation, useNavigate } from "react-router";
 import { ICreateJob } from "../create/data/initialValues";
 import { Helmet } from "react-helmet-async";
-import { DetailSection, StyledBody } from "./ViewJob.style";
+import {
+  AssigneItem,
+  AssigneSection,
+  DetailSection,
+  StyledBody,
+  StyledStatus,
+} from "./ViewJob.style";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
 import { Box, Typography } from "@mui/material";
@@ -16,6 +22,9 @@ const ViewJob = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data: ICreateJob = location?.state;
+  const assigneList = () => {
+    return data?.assignedPositions?.map((val) => val?.user);
+  };
   return (
     <>
       <Helmet title="View Position" />
@@ -114,6 +123,24 @@ const ViewJob = () => {
                 {data?.requestedBy || ""}
               </Typography>
             </DetailSection>
+            <DetailSection>
+              <Typography variant={"h5"}>Status:</Typography>
+              <StyledStatus
+                value={data?.status || ""}
+                variant={"body1"}
+                sx={{ marginLeft: "10px" }}
+              >
+                {data?.status || ""}
+              </StyledStatus>
+            </DetailSection>
+            <AssigneSection>
+              <Typography variant={"h5"}>Assignees:</Typography>
+              {assigneList()?.map((user, index: number) => (
+                <AssigneItem variant={"body1"} key={index}>
+                  {user?.full_name}
+                </AssigneItem>
+              ))}
+            </AssigneSection>
 
             <Box
               sx={{

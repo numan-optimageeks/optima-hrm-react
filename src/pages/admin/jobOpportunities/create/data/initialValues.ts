@@ -17,6 +17,7 @@ export interface ICreateJob {
   otherRequirements?: string;
   requestedBy?: string;
   status?: string;
+  assignedPositions?: any;
 }
 
 export const validations = Yup.object().shape({
