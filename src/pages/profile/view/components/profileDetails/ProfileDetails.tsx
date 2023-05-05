@@ -17,7 +17,14 @@ const ProfileDetails = () => {
     <StyledContainer>
       <StyledSection>
         <StyledImageContainer>
-          <StyledImage src={user?.image || defaultProfile} alt="profile-icon" />
+          <StyledImage
+            src={
+              user?.image
+                ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+                : defaultProfile
+            }
+            alt="profile-icon"
+          />
         </StyledImageContainer>
       </StyledSection>
       <StyledInfoSection>

@@ -22,6 +22,7 @@ import { useNavigate } from "react-router";
 import { RootState } from "src/store/store";
 import { NavLink } from "react-router-dom";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import defaultImage from "src/assests/images/default-profile.png";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -88,7 +89,11 @@ const HeaderUserbox = () => {
         <Avatar
           variant="rounded"
           alt={user?.full_name || ""}
-          src={"/static/images/avatars/3.jpg"}
+          src={
+            user?.image
+              ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+              : defaultImage
+          }
         />
         <Hidden mdDown>
           <UserBoxText>
@@ -119,7 +124,11 @@ const HeaderUserbox = () => {
           <Avatar
             variant="rounded"
             alt={user?.full_name || ""}
-            src={"/static/images/avatars/3.jpg"}
+            src={
+              user?.image
+                ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+                : defaultImage
+            }
           />
           <UserBoxText>
             <UserBoxLabel variant="body1">{user?.full_name || ""}</UserBoxLabel>

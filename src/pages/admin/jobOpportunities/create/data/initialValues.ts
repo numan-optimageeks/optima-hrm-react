@@ -54,5 +54,6 @@ export const initialValues = (): ICreateJob => {
     technicalSpecification: "",
     otherRequirements: "",
     requestedBy: "",
+    status: "open",
   };
 };

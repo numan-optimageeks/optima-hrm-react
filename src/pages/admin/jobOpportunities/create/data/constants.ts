@@ -118,10 +118,6 @@ export const UrgencyLevelTypes = [
 
 export const JobStatusTypes = [
   {
-    label: "",
-    value: "",
-  },
-  {
     label: "Open",
     value: "open",
   },

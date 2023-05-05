@@ -2,6 +2,7 @@ import { Typography, Avatar, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
+import defaultImage from "src/assests/images/default-profile.png";
 
 function PageHeader() {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -19,7 +20,11 @@ function PageHeader() {
           }}
           variant="rounded"
           alt={user?.full_name || ""}
-          src={"/static/images/avatars/3.jpg"}
+          src={
+            user?.image
+              ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+              : defaultImage
+          }
         />
       </Grid>
       <Grid item>

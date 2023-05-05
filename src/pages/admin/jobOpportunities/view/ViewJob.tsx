@@ -3,6 +3,7 @@ import { ICreateJob } from "../create/data/initialValues";
 import { Helmet } from "react-helmet-async";
 import {
   AssigneItem,
+  AssigneList,
   AssigneSection,
   DetailSection,
   StyledBody,
@@ -10,13 +11,14 @@ import {
 } from "./ViewJob.style";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
-import { Box, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import {
   StyledViewContainer,
   StyledViewLabel,
   StyledViewRoot,
 } from "src/theme/styles";
+import defaultImage from "src/assests/images/default-profile.png";
 
 const ViewJob = () => {
   const location = useLocation();
@@ -136,9 +138,20 @@ const ViewJob = () => {
             <AssigneSection>
               <Typography variant={"h5"}>Assignees:</Typography>
               {assigneList()?.map((user, index: number) => (
-                <AssigneItem variant={"body1"} key={index}>
-                  {user?.full_name}
-                </AssigneItem>
+                <AssigneList>
+                  <Avatar
+                    variant="rounded"
+                    alt={user?.full_name || ""}
+                    src={
+                      user?.image
+                        ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+                        : defaultImage
+                    }
+                  />
+                  <AssigneItem variant={"body1"} key={index}>
+                    {user?.full_name}
+                  </AssigneItem>
+                </AssigneList>
               ))}
             </AssigneSection>
 

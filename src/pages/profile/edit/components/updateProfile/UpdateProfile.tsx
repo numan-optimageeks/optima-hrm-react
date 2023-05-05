@@ -21,6 +21,8 @@ import defaultProfile from "src/assests/images/default-profile.png";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import { useEffect, useState } from "react";
 import { RootState } from "src/store/store";
+import { updateUser } from "src/store/features/Auth";
+import { USER } from "src/constants/constants";
 
 const UpdateProfile = ({ setLoading }) => {
   const AxiosClient = useAxios();
@@ -36,7 +38,9 @@ const UpdateProfile = ({ setLoading }) => {
   useEffect(() => {
     const updatedValues = {
       name: user?.full_name,
-      image: user?.image || "",
+      image: user?.image
+        ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+        : "",
     };
     setInitialValues(updatedValues);
   }, []);
@@ -46,8 +50,23 @@ const UpdateProfile = ({ setLoading }) => {
     formikHelpers: FormikHelpers<IUpdateProfile>
   ) => {
     setLoading(true);
-    console.log("values", values, icon);
     try {
+      const formData: any = new FormData();
+      formData.append("full_name", values?.name || "");
+      if (icon) formData.append("image", icon);
+
+      const res = await AxiosClient.put(
+        `/users/updateProfile/${user?.id}`,
+        formData
+      );
+      const data = res?.data?.data;
+      const updatedUser = {
+        ...user,
+        full_name: data?.full_name || "",
+        image: data?.image || null,
+      };
+      dispatch(updateUser({ user: updatedUser }));
+      localStorage.setItem(USER, JSON.stringify(updatedUser));
     } catch (err) {
       formikHelpers?.setSubmitting(false);
       toast.error(transformError(err)?.message);

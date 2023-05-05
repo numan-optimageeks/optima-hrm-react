@@ -57,5 +57,14 @@ export const AssigneItem = styled(Typography)(
   ({ theme }) => `
        color:${theme.colors?.primary?.main} !important;
        font-weight:500 !important;
+       margin-left:10px;
       `
+);
+
+export const AssigneList = styled(Box)(
+  ({ theme }) => `
+    display:flex;
+    align-items:center;
+    margin-top:10px;
+    `
 );
