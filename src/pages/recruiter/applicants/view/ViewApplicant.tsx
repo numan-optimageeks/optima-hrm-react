@@ -69,16 +69,6 @@ const ViewApplicant = () => {
               </Typography>
             </DetailSection>
             <InterviewDetails />
-
-            <Box display={"flex"} justifyContent={"flex-end"}>
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/applicants")}
-                sx={{ marginTop: "20px" }}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
         </StyledViewContainer>
       </StyledViewRoot>

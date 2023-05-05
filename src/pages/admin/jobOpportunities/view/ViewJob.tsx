@@ -154,21 +154,6 @@ const ViewJob = () => {
                 </AssigneList>
               ))}
             </AssigneSection>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "flex-end",
-              }}
-            >
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/job-opportunities")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
         </StyledViewContainer>
       </StyledViewRoot>

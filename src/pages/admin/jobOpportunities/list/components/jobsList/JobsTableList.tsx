@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { StyledBox, StyledStatus, StyledTable } from "./JobsTableList.style";
+import { StyledBox, StyledTable } from "./JobsTableList.style";
 import CustomPagination from "src/components/CustomPagination/CustomPagination";
 import { useNavigate } from "react-router";
 import { GridColDef } from "@mui/x-data-grid";
@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useAxios } from "src/hooks/useAxios";
 import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
+import PositionStatus from "../positionStatus/PositionStatus";
 
 const JobsListTable = ({
   jobsList,
@@ -79,7 +80,11 @@ const JobsListTable = ({
       flex: 1,
       minWidth: 150,
       renderCell: ({ row }) => (
-        <StyledStatus value={row?.status}>{row?.status}</StyledStatus>
+        <PositionStatus
+          row={row}
+          jobsList={jobsList}
+          setJobsList={setJobsList}
+        />
       ),
     },
     {

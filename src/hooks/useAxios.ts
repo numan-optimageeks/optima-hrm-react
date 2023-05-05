@@ -35,7 +35,7 @@ export const useAxios = () => {
         if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
           logoutUser();
-          navigate("/");
+          // navigate("/");
         }
 
         return Promise.reject(error);

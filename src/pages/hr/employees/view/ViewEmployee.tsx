@@ -138,21 +138,6 @@ const ViewEmployee = () => {
                 {data?.address || ""}
               </Typography>
             </DetailSection>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "flex-end",
-              }}
-            >
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/employees")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
         </StyledViewContainer>
       </StyledViewRoot>

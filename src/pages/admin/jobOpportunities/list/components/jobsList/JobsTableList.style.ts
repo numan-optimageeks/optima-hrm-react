@@ -12,26 +12,6 @@ export const StyledBox = styled(Box)<IStyledBox>(
     `
 );
 
-interface IStyledStatus {
-  value: string;
-}
-export const StyledStatus = styled(Stack)<IStyledStatus>(({ theme, value }) => {
-  const getColor = () => {
-    switch (value) {
-      case "open":
-        return theme.colors.primary.main;
-      case "hold":
-        return theme.colors.warning.main;
-      default:
-        return theme.colors.error.main;
-    }
-  };
-  return `text-transform: capitalize;
-          font-weight: bold;
-          color: ${getColor()};
-  `;
-});
-
 export const StyledTable = styled(DataGrid)(
   ({ theme }) => `
   .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus{

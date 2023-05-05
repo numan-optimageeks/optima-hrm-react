@@ -46,14 +46,6 @@ const ViewUser = () => {
                 {data?.email || ""}
               </Typography>
             </DetailSection>
-            <Box display={"flex"} justifyContent={"flex-end"}>
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/users")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
         </StyledViewContainer>
       </StyledViewRoot>

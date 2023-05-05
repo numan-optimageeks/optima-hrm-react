@@ -44,14 +44,6 @@ const ViewDepartment = () => {
                 {data?.description || ""}
               </Typography>
             </DetailSection>
-            <Box display={"flex"} justifyContent={"flex-end"}>
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/designations")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
         </StyledViewContainer>
       </StyledViewRoot>
