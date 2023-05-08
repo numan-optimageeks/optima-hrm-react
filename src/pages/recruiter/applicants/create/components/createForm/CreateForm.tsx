@@ -2,7 +2,11 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useAxios } from "src/hooks/useAxios";
-import { CreateApplicant, initialValues, validations } from "../../data/initialValues";
+import {
+  CreateApplicant,
+  initialValues,
+  validations,
+} from "../../data/initialValues";
 import { IApplicant } from "../../data/interface";
 import states from "src/pages/hr/employees/create/data/states.json";
 import { StyledForm, StyledInput } from "./CreateForm.style";
@@ -12,48 +16,54 @@ import InputMask from "react-input-mask";
 import { GenderTypes } from "../../data/constants";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
-
-const CreateForm=()=>{
-    const navigate = useNavigate();
+const CreateForm = () => {
+  const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const location = useLocation();
   const editState: IApplicant = location?.state;
   const [details, setDetails] = useState([]);
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (editState?.id) {
       const editValues = {
-        address:  editState?.address || "",
-        age:  editState?.age || "",
-        city:  editState?.city || "",
-        cnic:  editState?.cnic || "",
-        education:  editState?.education || "",
+        address: editState?.address || "",
+        age: editState?.age || "",
+        city: editState?.city || "",
+        cnic: editState?.cnic || "",
+        education: editState?.education || "",
         email: editState?.email || "",
-        fullName:  editState?.fullName || "",
-        gender:  editState?.gender || "",
-        phoneNumber:  editState?.phoneNumber || "",
-        state:  editState?.state || "",
+        fullName: editState?.fullName || "",
+        gender: editState?.gender || "",
+        phoneNumber: editState?.phoneNumber || "",
+        state: editState?.state || "",
       };
       setInitialValue(editValues);
     }
   }, [editState]);
 
   const handleFormSubmit = async (values: CreateApplicant) => {
+    setLoading(true);
     try {
       const payload = {
-        address:  values?.address || "",
-        age:  values?.age || "",
-        city:  values?.city || "",
-        cnic:  values?.cnic || "",
-        education:  values?.education || "",
+        address: values?.address || "",
+        age: values?.age || "",
+        city: values?.city || "",
+        cnic: values?.cnic || "",
+        education: values?.education || "",
         email: values?.email || "",
-        fullName:  values?.fullName || "",
-        gender:  values?.gender || "",
-        phoneNumber:  values?.phoneNumber || "",
-        state:  values?.state || "",
+        fullName: values?.fullName || "",
+        gender: values?.gender || "",
+        phoneNumber: values?.phoneNumber || "",
+        state: values?.state || "",
       };
       if (editState?.id) {
         await AxiosClient.put(`/applicant/update/${editState?.id}`, payload);
@@ -62,8 +72,9 @@ const CreateForm=()=>{
       }
       navigate("/applicants");
     } catch (err) {
-      console.log("Error while create applicant");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -102,8 +113,10 @@ const CreateForm=()=>{
       });
   };
 
-    return(<form onSubmit={handleSubmit} autoComplete="off">
-        <StyledForm>
+  return (
+    <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
+      <StyledForm>
         <StyledInput>
           <CustomInput
             label="Name"
@@ -117,9 +130,7 @@ const CreateForm=()=>{
             }
             error={isError("fullName", errors, touched)}
             {...getFieldProps("fullName")}
-            
           />
-
         </StyledInput>
         <StyledInput>
           <CustomInput
@@ -134,15 +145,13 @@ const CreateForm=()=>{
             }
             error={isError("email", errors, touched)}
             {...getFieldProps("email")}
-            
           />
-          
         </StyledInput>
       </StyledForm>
 
       <StyledForm>
         <StyledInput>
-        <InputMask
+          <InputMask
             mask="9999999999999"
             maskplaceholder=""
             alwaysShowMask={false}
@@ -167,10 +176,9 @@ const CreateForm=()=>{
               />
             )}
           </InputMask>
-
         </StyledInput>
         <StyledInput>
-        <InputMask
+          <InputMask
             mask="+99 999 999 9999"
             maskplaceholder=""
             alwaysShowMask={false}
@@ -192,12 +200,12 @@ const CreateForm=()=>{
               />
             )}
           </InputMask>
-          
         </StyledInput>
       </StyledForm>
 
-      <StyledForm><StyledInput>
-      <CustomInput
+      <StyledForm>
+        <StyledInput>
+          <CustomInput
             select
             label="Gender"
             id="gender"
@@ -219,7 +227,6 @@ const CreateForm=()=>{
               </option>
             ))}
           </CustomInput>
-
         </StyledInput>
         <StyledInput>
           <CustomInput
@@ -234,9 +241,7 @@ const CreateForm=()=>{
             }
             error={isError("age", errors, touched)}
             {...getFieldProps("age")}
-            
           />
-          
         </StyledInput>
       </StyledForm>
 
@@ -325,7 +330,10 @@ const CreateForm=()=>{
         />
       </StyledForm>
       <Box display={"flex"} justifyContent={"flex-end"}>
-        <CustomButton variant="outlined" onClick={() => navigate("/applicants")}>
+        <CustomButton
+          variant="outlined"
+          onClick={() => navigate("/applicants")}
+        >
           Cancel
         </CustomButton>
         <CustomButton
@@ -334,9 +342,10 @@ const CreateForm=()=>{
           //   disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
-    </form>)
-}
-export default CreateForm
+    </form>
+  );
+};
+export default CreateForm;

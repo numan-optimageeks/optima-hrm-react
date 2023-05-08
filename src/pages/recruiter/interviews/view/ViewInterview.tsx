@@ -1,15 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router";
 import Footer from "src/components/Footer";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewInterview.style";
+import { DetailSection, StyledBody } from "./ViewInterview.style";
 import BackButton from "src/components/BackButton/BackButton";
 import { Typography } from "@mui/material";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewInterview = () => {
   const location = useLocation();
@@ -18,10 +17,10 @@ const ViewInterview = () => {
   return (
     <>
       <Helmet title="View Applicant" />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/interviews"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Interview Details</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Interview Details</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Applicant Name:</Typography>
@@ -114,8 +113,8 @@ const ViewInterview = () => {
               </Typography>
             </DetailSection>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

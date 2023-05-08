@@ -14,15 +14,21 @@ import { isError, isErrorMessage } from "src/utils/utils";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
+import { UserRoles } from "../../data/constants";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   const editState: IUser = location?.state;
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -32,6 +38,7 @@ const CreateForm = () => {
       const editValues = {
         email: editState?.email || "",
         full_name: editState?.full_name || "",
+        role: editState?.role || "",
       };
       setInitialValue(editValues);
       //@ts-ignore
@@ -39,6 +46,7 @@ const CreateForm = () => {
     }
   }, [editState]);
   const handleFormSubmit = async (values: CreateUser) => {
+    setLoading(true);
     try {
       const payload = {
         email: values?.email || "",
@@ -48,7 +56,6 @@ const CreateForm = () => {
       };
       if (editState?.id) {
         delete payload.password;
-        delete payload.role;
 
         await AxiosClient.put(`/users/update/${editState?.id}`, payload);
       } else {
@@ -56,8 +63,9 @@ const CreateForm = () => {
       }
       navigate("/users");
     } catch (err) {
-      console.log("Error while create user");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -96,6 +104,7 @@ const CreateForm = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <CustomInput
         label="Name"
         type={"text"}
@@ -109,6 +118,27 @@ const CreateForm = () => {
         error={isError("full_name", errors, touched)}
         {...getFieldProps("full_name")}
       />
+      <CustomInput
+        select
+        label="Role"
+        id="role"
+        placeholder="Role"
+        helperText={
+          isError("role", errors, touched) ? isErrorMessage("role", errors) : ""
+        }
+        error={isError("role", errors, touched)}
+        {...getFieldProps("role")}
+        SelectProps={{
+          native: true,
+        }}
+        sx={{ marginTop: "20px" }}
+      >
+        {UserRoles?.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </CustomInput>
       <CustomInput
         label="E-mail"
         type={"text"}
@@ -152,7 +182,7 @@ const CreateForm = () => {
           disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

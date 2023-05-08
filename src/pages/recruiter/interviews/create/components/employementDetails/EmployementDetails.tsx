@@ -18,11 +18,15 @@ import { InterviewTypes, RecomendTypes } from "../../data/constants";
 import { format } from "date-fns";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const EmployementDetails = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   //@ts-ignore
   const editState: ICreateInterview = location?.state?.interview;
   const [details, setDetails] = useState([]);
@@ -30,16 +34,18 @@ const EmployementDetails = () => {
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
-  // console.log("editstate", editState);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getEmployees = async () => {
+      setLoading(true);
       try {
         const res = await AxiosClient.post(`/employee/`);
         setEmployees(res?.data?.data);
       } catch (err) {
-        console.log("error while get employees");
+        toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getEmployees();
   }, []);
@@ -78,6 +84,7 @@ const EmployementDetails = () => {
   }, [editState]);
 
   const handleFormSubmit = async (values: ICreateInterview) => {
+    setLoading(true);
     try {
       const payload = {
         interviewerId: values?.interviewerId || null,
@@ -110,8 +117,9 @@ const EmployementDetails = () => {
       }
       navigate("/interviews");
     } catch (err) {
-      console.log("Error while create interview");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
 
   const {
@@ -149,6 +157,7 @@ const EmployementDetails = () => {
   };
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <StyledLabel variant="h5">Employement Details</StyledLabel>
       <StyledForm>
         <StyledInput>
@@ -480,7 +489,8 @@ const EmployementDetails = () => {
           //   disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {/* @ts-ignore */}
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

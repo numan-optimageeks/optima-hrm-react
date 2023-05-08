@@ -6,16 +6,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router";
 import { StyledBox, StyledTable } from "./ApplicantTable.style";
 import { Stack } from "@mui/material";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const ApplicantTable = ({ applicantList, handleDelete }) => {
+const ApplicantTable = ({
+  applicantList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
       field: "fullName",
       headerName: "Name",
       disableColumnMenu: true,
-      flex: 2,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "email",
@@ -28,19 +34,19 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
       field: "phoneNumber",
       headerName: "Phone",
       disableColumnMenu: true,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "cnic",
       headerName: "CNIC",
       disableColumnMenu: true,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "gender",
       headerName: "Gender",
       disableColumnMenu: true,
-      minWidth: 100,
+      minWidth: 80,
     },
     {
       field: "interviewDetails",
@@ -86,14 +92,9 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
       <StyledTable
         rows={applicantList}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        rowCount={pages}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -101,6 +102,7 @@ const ApplicantTable = ({ applicantList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

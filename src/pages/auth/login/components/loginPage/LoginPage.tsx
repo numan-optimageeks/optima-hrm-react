@@ -25,10 +25,13 @@ import { StyledBox, StyledLabel, StyledTagline } from "./LoginPage.style";
 import { useAxios } from "src/hooks/useAxios";
 import LocalStorage from "src/services/localStorage";
 import { TOKEN, USER } from "src/constants/constants";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
 
-const LoginPage = () => {
+const LoginPage = ({ setLoading }) => {
   const theme = useTheme();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -39,29 +42,31 @@ const LoginPage = () => {
     values: ILogin,
     formikHelpers: FormikHelpers<ILogin>
   ) => {
+    setLoading(true);
     try {
       const payload = {
         email: values?.email,
         password: values?.password,
       };
-      const res = await AxiosClient.post(
-        `${process.env.REACT_APP_MAILING_BACKEND}/auth/login`,
-        payload
-      );
+      const res = await AxiosClient.post(`/auth/login`, payload);
+
       const data = res?.data?.data;
       const user = {
-        email: data?.email,
-        full_name: data?.full_name,
-        id: data?.id,
+        email: data?.user?.email,
+        full_name: data?.user?.full_name,
+        id: data?.user?.id,
+        role: data?.user?.role,
+        image: data?.user?.image,
       };
       LocalStorage.SetItem(TOKEN, data?.token);
       LocalStorage.SetItem(USER, JSON.stringify(user));
       dispatch(loginUser({ user: user, token: data?.token }));
       navigate("/dashboard");
     } catch (err) {
-      formikHelpers?.resetForm();
-      console.log("Error while Login");
+      formikHelpers?.setSubmitting(false);
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>

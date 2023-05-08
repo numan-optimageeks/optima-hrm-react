@@ -1,29 +1,29 @@
 import { Helmet } from "react-helmet-async";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./CreateInterview.style";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
 import Candidate from "./components/candidate/Candidate";
 import EmployementDetails from "./components/employementDetails/EmployementDetails";
+import {
+  StyledCreateBody,
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const CreateInterview = () => {
   return (
     <>
       <Helmet title="Applicant Details" />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/interviews"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">Applicant Details</StyledLabel>
-          <StyledBody>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">Applicant Details</StyledViewLabel>
+          <StyledCreateBody>
             <Candidate />
             <EmployementDetails />
-          </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+          </StyledCreateBody>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

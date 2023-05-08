@@ -1,16 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./CreateDesignation.style";
 import CreateForm from "./components/createForm/CreateForm";
 
 import BackButton from "src/components/BackButton/BackButton";
 import { useLocation } from "react-router";
 import { IEmployee } from "./data/interface";
+import {
+  StyledCreateBody,
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const CreateDesignation = () => {
   const location = useLocation();
@@ -19,17 +19,17 @@ const CreateDesignation = () => {
   return (
     <>
       <Helmet title={editState?.id ? "Edit Employee" : "Create Employee"} />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/employees"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">
             {editState?.id ? "Edit" : "Create"} Employee
-          </StyledLabel>
-          <StyledBody>
+          </StyledViewLabel>
+          <StyledCreateBody>
             <CreateForm />
-          </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+          </StyledCreateBody>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

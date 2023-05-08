@@ -3,30 +3,35 @@ import { useLocation } from "react-router";
 import BackButton from "src/components/BackButton/BackButton";
 import Footer from "src/components/Footer";
 import CreateForm from "./components/createForm/CreateForm";
-import { StyledBody, StyledContainer, StyledLabel, StyledRoot } from "./CreateApplicant.style";
 import { IApplicant } from "./data/interface";
+import {
+  StyledCreateBody,
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const CreateApplicant = () => {
-    const location = useLocation();
-  
-    const editState: IApplicant = location?.state;
-    return (
-      <>
-        <Helmet title={editState?.id ? "Edit Applicant" : "Create Applicant"} />
-        <StyledRoot maxWidth="lg">
-          <BackButton path={"/applicants"} />
-          <StyledContainer>
-            <StyledLabel variant="h5">
-              {editState?.id ? "Edit" : "Create"} Applicant
-            </StyledLabel>
-            <StyledBody>
-              <CreateForm />
-            </StyledBody>
-          </StyledContainer>
-        </StyledRoot>
-  
-        <Footer />
-      </>
-    );
-  };
-  export default CreateApplicant;
+  const location = useLocation();
+
+  const editState: IApplicant = location?.state;
+  return (
+    <>
+      <Helmet title={editState?.id ? "Edit Applicant" : "Create Applicant"} />
+      <StyledViewRoot maxWidth="lg">
+        <BackButton path={"/applicants"} />
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">
+            {editState?.id ? "Edit" : "Create"} Applicant
+          </StyledViewLabel>
+          <StyledCreateBody>
+            <CreateForm />
+          </StyledCreateBody>
+        </StyledViewContainer>
+      </StyledViewRoot>
+
+      <Footer />
+    </>
+  );
+};
+export default CreateApplicant;

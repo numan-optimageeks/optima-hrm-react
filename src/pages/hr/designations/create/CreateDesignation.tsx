@@ -1,16 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./CreateDesignation.style";
 import CreateForm from "./components/createForm/CreateForm";
 
 import BackButton from "src/components/BackButton/BackButton";
 import { useLocation } from "react-router";
 import { IDesignation } from "../../departments/create/data/interface";
+import {
+  StyledCreateBody,
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const CreateDesignation = () => {
   const location = useLocation();
@@ -19,17 +19,17 @@ const CreateDesignation = () => {
   return (
     <>
       <Helmet title="Create Designation" />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/designations"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">
             {editState?.id ? "Edit" : "Create"} Designation
-          </StyledLabel>
-          <StyledBody>
+          </StyledViewLabel>
+          <StyledCreateBody>
             <CreateForm />
-          </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+          </StyledCreateBody>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

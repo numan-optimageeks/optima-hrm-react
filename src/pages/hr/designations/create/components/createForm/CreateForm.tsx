@@ -12,15 +12,21 @@ import CustomButton from "src/components/CustomButton/CustomButton";
 import { Box } from "@mui/material";
 import CustomInput from "src/components/CustomInput/CustomInput";
 import { isError, isErrorMessage } from "src/utils/utils";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const location = useLocation();
   const editState: IDesignation = location?.state;
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (editState?.id) {
       const editValues = {
@@ -32,6 +38,7 @@ const CreateForm = () => {
     }
   }, [editState]);
   const handleFormSubmit = async (values: CreateDesignation) => {
+    setLoading(true);
     try {
       const payload = {
         designation: values?.name,
@@ -45,8 +52,9 @@ const CreateForm = () => {
       }
       navigate("/designations");
     } catch (err) {
-      console.log("Error while create designation");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -64,6 +72,7 @@ const CreateForm = () => {
   });
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <CustomInput
         label="Designation"
         type={"text"}
@@ -116,7 +125,7 @@ const CreateForm = () => {
           disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

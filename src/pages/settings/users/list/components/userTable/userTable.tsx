@@ -5,9 +5,19 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Stack } from "@mui/material";
-import { StyledBox, StyledTable } from "./userTable.module";
+import { StyledBox, StyledRole, StyledTable } from "./userTable.module";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
-const UserTable = ({ userList, handleDelete }) => {
+const UserTable = ({
+  userList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -23,6 +33,13 @@ const UserTable = ({ userList, handleDelete }) => {
       disableColumnMenu: true,
       flex: 2,
       minWidth: 250,
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      disableColumnMenu: true,
+      minWidth: 100,
+      renderCell: (params) => <StyledRole>{params?.row?.role}</StyledRole>,
     },
     {
       field: "actions",
@@ -41,30 +58,35 @@ const UserTable = ({ userList, handleDelete }) => {
             onClick={() => navigate("/users/create", { state: params?.row })}
             component={<CreateIcon />}
           />
-          <LinkIcon
-            title="Delete"
-            onClick={() => handleDelete(params?.row?.id)}
-            component={<DeleteIcon />}
-          />
+          {params?.row.role === "admin" ? (
+            <></>
+          ) : (
+            <LinkIcon
+              title="Delete"
+              onClick={() => handleDelete(params?.row?.id)}
+              component={<DeleteIcon />}
+            />
+          )}
         </>
       ),
       minWidth: 150,
     },
   ];
+  const getColumns = () => {
+    if (user?.role === "hr") {
+      return columns?.filter((col) => col?.field !== "actions");
+    }
+    return columns;
+  };
 
   return (
     <StyledBox rows={userList?.length}>
       <StyledTable
         rows={userList}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        rowCount={pages}
+        columns={getColumns()}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -72,6 +94,7 @@ const UserTable = ({ userList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

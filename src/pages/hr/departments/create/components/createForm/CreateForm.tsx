@@ -12,12 +12,17 @@ import { useLocation, useNavigate } from "react-router";
 import { useAxios } from "src/hooks/useAxios";
 import { IDepartment } from "../../../view/ViewDepartment";
 import { useEffect, useState } from "react";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
+  const toast = useToast();
   const location = useLocation();
   const editState: IDepartment = location?.state;
+  const [loading, setLoading] = useState(false);
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
@@ -31,6 +36,7 @@ const CreateForm = () => {
     }
   }, [editState]);
   const handleFormSubmit = async (values: CreateDepartment) => {
+    setLoading(true);
     try {
       const payload = {
         department: values?.name,
@@ -43,8 +49,9 @@ const CreateForm = () => {
       }
       navigate("/departments");
     } catch (err) {
-      console.log("Error while create department");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -62,6 +69,7 @@ const CreateForm = () => {
   });
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <CustomInput
         label="Department"
         type={"text"}
@@ -101,7 +109,7 @@ const CreateForm = () => {
           disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

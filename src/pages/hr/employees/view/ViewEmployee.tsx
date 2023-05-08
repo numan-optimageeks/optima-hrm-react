@@ -1,17 +1,16 @@
 import { useLocation, useNavigate } from "react-router";
 import { IEmployee } from "../create/data/interface";
 import { Helmet } from "react-helmet-async";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewEmployee.style";
+import { DetailSection, StyledBody } from "./ViewEmployee.style";
 import Footer from "src/components/Footer";
 import BackButton from "src/components/BackButton/BackButton";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const ViewEmployee = () => {
   const location = useLocation();
@@ -20,10 +19,10 @@ const ViewEmployee = () => {
   return (
     <>
       <Helmet title="View Employee" />
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/employees"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Employee</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Employee</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Employee ID:</Typography>
@@ -139,24 +138,9 @@ const ViewEmployee = () => {
                 {data?.address || ""}
               </Typography>
             </DetailSection>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "flex-end",
-              }}
-            >
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/employees")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
       <Footer />
     </>
   );

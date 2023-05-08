@@ -6,8 +6,15 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { StyledBox, StyledTable } from "./DesignationTable.style";
 import { Stack } from "@mui/material";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const DesignationTable = ({ designationList, handleDelete }) => {
+const DesignationTable = ({
+  designationList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -60,14 +67,9 @@ const DesignationTable = ({ designationList, handleDelete }) => {
       <StyledTable
         rows={designationList}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        rowCount={pages}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -75,6 +77,7 @@ const DesignationTable = ({ designationList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

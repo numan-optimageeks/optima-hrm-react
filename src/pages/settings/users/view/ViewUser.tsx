@@ -1,31 +1,38 @@
 import { useLocation, useNavigate } from "react-router";
 import { IUser } from "../create/data/interface";
 import { Helmet } from "react-helmet-async";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewUser.style";
+import { DetailSection, StyledBody } from "./ViewUser.style";
 import BackButton from "src/components/BackButton/BackButton";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 const ViewUser = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const data: IUser = location?.state;
+
+  useEffect(() => {
+    if (user?.role !== "admin") navigate("/users");
+  }, []);
 
   return (
     <>
       <Helmet title="View User" />
 
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/users"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View User</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View User</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Name:</Typography>
@@ -39,17 +46,9 @@ const ViewUser = () => {
                 {data?.email || ""}
               </Typography>
             </DetailSection>
-            <Box display={"flex"} justifyContent={"flex-end"}>
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/users")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

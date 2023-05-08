@@ -4,8 +4,15 @@ import { GridColDef } from "@mui/x-data-grid";
 import { LinkIcon } from "src/pages/hr/departments/list/components/departmentTable/DepartmentTable";
 import ListIcon from "@mui/icons-material/List";
 import { StyledBox, StyledTable } from "./InterviewTable.style";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const InterviewTable = ({ applicantList = [], handleDelete }) => {
+const InterviewTable = ({
+  applicantList = [],
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -69,14 +76,9 @@ const InterviewTable = ({ applicantList = [], handleDelete }) => {
       <StyledTable
         rows={applicantList?.length > 0 ? applicantList : []}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        rowCount={pages}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -84,6 +86,7 @@ const InterviewTable = ({ applicantList = [], handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

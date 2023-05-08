@@ -3,16 +3,19 @@ import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router";
 import DeleteAlert from "src/components/DeleteModal/DeleteModal";
 import { useAxios } from "src/hooks/useAxios";
-import {
-  StyledBody,
-  StyledContainer,
-  StyledHeader,
-  StyledRoot,
-} from "./InterviewDetails.style";
 import { Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import Footer from "src/components/Footer";
 import DetailsTable from "./components/detailsTable/DetailsTable";
+import { transformError } from "src/helpers/transformError";
+import { useToast } from "src/hooks/useToast";
+import Loader from "src/components/Loader/Loader";
+import {
+  StyledCreateBody,
+  StyledListContainer,
+  StyledListHeader,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 const InterviewDetails = () => {
   const navigate = useNavigate();
@@ -20,9 +23,12 @@ const InterviewDetails = () => {
   const AxiosClient = useAxios();
   const [applicantList, setApplicantList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const deleteId = useRef("");
+  const toast = useToast();
   useEffect(() => {
     const getApplicants = async () => {
+      setLoading(true);
       const editstate = location?.state;
       try {
         const payload = {
@@ -40,8 +46,9 @@ const InterviewDetails = () => {
         });
         setApplicantList(mapped || []);
       } catch (err) {
-        console.log("error while get applicant....");
+        toast.error(transformError(err)?.message);
       }
+      setLoading(false);
     };
     getApplicants();
   }, []);
@@ -51,26 +58,29 @@ const InterviewDetails = () => {
   };
   const handleDeleteInterview = async () => {
     const id = deleteId.current;
+    setLoading(true);
     try {
       await AxiosClient.delete(`/interview/delete/${id}`);
       const filtered = applicantList?.filter((item) => item?.id !== id);
       setApplicantList(filtered);
     } catch (err) {
-      console.log("Error while delete Applicant", err);
+      toast.error(transformError(err)?.message);
     }
     setDeleteModal(false);
+    setLoading(false);
   };
   return (
     <>
       <Helmet title="Interviews" />
+      {loading && <Loader />}
       <DeleteAlert
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}
         handleYes={handleDeleteInterview}
       />
-      <StyledRoot maxWidth="lg">
-        <StyledContainer>
-          <StyledHeader>
+      <StyledViewRoot maxWidth="lg">
+        <StyledListContainer>
+          <StyledListHeader>
             <Typography variant="h5">Interview List</Typography>
             <CustomButton
               variant="contained"
@@ -82,15 +92,15 @@ const InterviewDetails = () => {
             >
               Schedule New
             </CustomButton>
-          </StyledHeader>
-          <StyledBody>
+          </StyledListHeader>
+          <StyledCreateBody>
             <DetailsTable
               applicantList={applicantList}
               handleDelete={handleDelete}
             />
-          </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+          </StyledCreateBody>
+        </StyledListContainer>
+      </StyledViewRoot>
       <Footer />
     </>
   );

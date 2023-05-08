@@ -1,16 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import Footer from "src/components/Footer";
-import {
-  DetailSection,
-  StyledBody,
-  StyledContainer,
-  StyledLabel,
-  StyledRoot,
-} from "./ViewDepartment.style";
+import { DetailSection, StyledBody } from "./ViewDepartment.style";
 import { useLocation, useNavigate } from "react-router";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
 import BackButton from "src/components/BackButton/BackButton";
+import {
+  StyledViewContainer,
+  StyledViewLabel,
+  StyledViewRoot,
+} from "src/theme/styles";
 
 export interface IDepartment {
   id?: number;
@@ -31,10 +30,10 @@ const ViewDepartment = () => {
     <>
       <Helmet title="View Department" />
 
-      <StyledRoot maxWidth="lg">
+      <StyledViewRoot maxWidth="lg">
         <BackButton path={"/departments"} />
-        <StyledContainer>
-          <StyledLabel variant="h5">View Department</StyledLabel>
+        <StyledViewContainer>
+          <StyledViewLabel variant="h5">View Department</StyledViewLabel>
           <StyledBody>
             <DetailSection>
               <Typography variant={"h5"}>Name:</Typography>
@@ -48,17 +47,9 @@ const ViewDepartment = () => {
                 {data?.description || ""}
               </Typography>
             </DetailSection>
-            <Box display={"flex"} justifyContent={"flex-end"}>
-              <CustomButton
-                variant="outlined"
-                onClick={() => navigate("/departments")}
-              >
-                Go back
-              </CustomButton>
-            </Box>
           </StyledBody>
-        </StyledContainer>
-      </StyledRoot>
+        </StyledViewContainer>
+      </StyledViewRoot>
 
       <Footer />
     </>

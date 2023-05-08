@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "src/assests/images/optima-logo.png";
 import LoginPage from "src/pages/auth/login/components/loginPage/LoginPage";
 import { StyledBox } from "./Login.style";
@@ -7,22 +7,27 @@ import { RootState } from "src/store/store";
 import { useNavigate } from "react-router";
 import LocalStorage from "src/services/localStorage";
 import { TOKEN } from "src/constants/constants";
+import Loader from "src/components/Loader/Loader";
 
 const Login = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
+      setLoading(true);
       const token = await LocalStorage.GetItem(TOKEN);
-      if (token) navigate(-1);
+      if (token) navigate("/dashboard");
+      setLoading(false);
     };
     checkAuth();
   }, [user?.id]);
   return (
     <StyledBox>
+      {loading && <Loader />}
       <img src={logo} alt="Optima Geeks" className={"logo"} />
-      <LoginPage />
+      <LoginPage setLoading={setLoading} />
     </StyledBox>
   );
 };

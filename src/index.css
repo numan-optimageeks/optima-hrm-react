@@ -5,3 +5,8 @@ input:-webkit-autofill:active {
   -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
   -webkit-transition-delay: 9999s;
 }
+@media (min-width: 1280px) {
+  .css-4ef32a-MuiContainer-root {
+    max-width: 100% !important;
+  }
+}

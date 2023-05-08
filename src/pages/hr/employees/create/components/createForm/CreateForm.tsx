@@ -13,16 +13,21 @@ import states from "../../data/states.json";
 import InputMask from "react-input-mask";
 import { Box } from "@mui/material";
 import CustomButton from "src/components/CustomButton/CustomButton";
+import { useToast } from "src/hooks/useToast";
+import { transformError } from "src/helpers/transformError";
+import Loader from "src/components/Loader/Loader";
 
 const CreateForm = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
+  const toast = useToast();
   const editState: IEmployee = location?.state;
   const [details, setDetails] = useState([]);
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
   });
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (editState?.id) {
       const editValues = {
@@ -48,6 +53,7 @@ const CreateForm = () => {
   }, [editState]);
 
   const handleFormSubmit = async (values: CreateEmployee) => {
+    setLoading(true);
     try {
       const payload = {
         address: values?.address || "",
@@ -74,8 +80,9 @@ const CreateForm = () => {
       }
       navigate("/employees");
     } catch (err) {
-      console.log("Error while create employee");
+      toast.error(transformError(err)?.message);
     }
+    setLoading(false);
   };
   const {
     errors,
@@ -108,7 +115,7 @@ const CreateForm = () => {
         const res = await AxiosClient.post(`/shared/details`);
         setDetails(res?.data?.data);
       } catch (err) {
-        console.log("error while get details");
+        toast.error(transformError(err)?.message);
       }
     };
     if (!editState?.id) {
@@ -181,6 +188,7 @@ const CreateForm = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      {loading && <Loader />}
       <StyledForm>
         <StyledInput>
           <CustomInput
@@ -540,7 +548,7 @@ const CreateForm = () => {
           //   disabled={!(isValid && dirty) || isSubmitting}
           sx={{ marginLeft: "20px" }}
         >
-          Create
+          {editState?.id ? "Save" : "Create"}
         </CustomButton>
       </Box>
     </form>

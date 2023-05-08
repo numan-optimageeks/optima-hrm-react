@@ -79,6 +79,22 @@ const ViewInterview = Loader(
 const CreateInterview = Loader(
   lazy(() => import("src/pages/recruiter/interviews/create/CreateInterview"))
 );
+const JobList = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/list/JobList"))
+);
+const ViewJob = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/view/ViewJob"))
+);
+const CreateJob = Loader(
+  lazy(() => import("src/pages/admin/jobOpportunities/create/CreateJob"))
+);
+const ViewProfile = Loader(
+  lazy(() => import("src/pages/profile/view/ViewProfile"))
+);
+const EditProfile = Loader(
+  lazy(() => import("src/pages/profile/edit/EditProfile"))
+);
+
 const routes: RouteObject[] = [
   {
     path: LOGIN,
@@ -176,6 +192,20 @@ const routes: RouteObject[] = [
             ],
           },
           {
+            path: "/job-opportunities",
+            children: [
+              {
+                index: true,
+                element: <JobList />,
+              },
+              {
+                path: "create",
+                element: <CreateJob />,
+              },
+              { path: "view", element: <ViewJob /> },
+            ],
+          },
+          {
             path: "users",
 
             children: [
@@ -188,6 +218,19 @@ const routes: RouteObject[] = [
                 element: <CreateUser />,
               },
               { path: "view", element: <ViewUser /> },
+            ],
+          },
+          {
+            path: "profile",
+            children: [
+              {
+                index: true,
+                element: <ViewProfile />,
+              },
+              {
+                path: "edit",
+                element: <EditProfile />,
+              },
             ],
           },
         ],

@@ -6,8 +6,15 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { StyledBox, StyledTable } from "./EmployeeTable.style";
 import { Stack } from "@mui/material";
+import CustomPagination from "src/components/CustomPagination/CustomPagination";
 
-const EmployeeTable = ({ employeeList, handleDelete }) => {
+const EmployeeTable = ({
+  employeeList,
+  handleDelete,
+  paginationModel,
+  setPaginationModel,
+  pages,
+}) => {
   const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
@@ -43,6 +50,11 @@ const EmployeeTable = ({ employeeList, handleDelete }) => {
       headerName: "Status",
       disableColumnMenu: true,
       minWidth: 100,
+      renderCell: (params) => (
+        <Stack sx={{ textTransform: "capitalize", color: "#04b018" }}>
+          {params?.row?.status}
+        </Stack>
+      ),
     },
     {
       field: "actions",
@@ -77,15 +89,10 @@ const EmployeeTable = ({ employeeList, handleDelete }) => {
     <StyledBox rows={employeeList?.length}>
       <StyledTable
         rows={employeeList}
+        rowCount={pages}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[10]}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         disableRowSelectionOnClick
         slots={{
           noRowsOverlay: () => (
@@ -93,6 +100,7 @@ const EmployeeTable = ({ employeeList, handleDelete }) => {
               No Data Found!
             </Stack>
           ),
+          pagination: CustomPagination,
         }}
       />
     </StyledBox>

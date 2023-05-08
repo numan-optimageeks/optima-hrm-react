@@ -6,6 +6,9 @@ import {
   Divider,
   Hidden,
   lighten,
+  List,
+  ListItem,
+  ListItemText,
   Popover,
   Typography,
 } from "@mui/material";
@@ -14,7 +17,12 @@ import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
 import { TOKEN, USER } from "src/constants/constants";
 import { removeUser } from "src/store/features/Auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { RootState } from "src/store/store";
+import { NavLink } from "react-router-dom";
+import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import defaultImage from "src/assests/images/default-profile.png";
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -42,22 +50,21 @@ const UserBoxLabel = styled(Typography)(
         font-weight: ${theme.typography.fontWeightBold};
         color: ${theme.palette.secondary.main};
         display: block;
+        text-transform: uppercase;
 `
 );
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
-        color: ${lighten(theme.palette.secondary.main, 0.5)}
+        color: ${lighten(theme.palette.secondary.main, 0.5)};
+        text-transform: uppercase;
 `
 );
 
 const HeaderUserbox = () => {
   const dispatch = useDispatch();
-  const user = {
-    name: "Admin",
-    avatar: "/static/images/avatars/3.jpg",
-    jobtitle: "Project Manager",
-  };
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -73,17 +80,26 @@ const HeaderUserbox = () => {
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(USER);
     dispatch(removeUser());
+    navigate("/login");
   };
 
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar
+          variant="rounded"
+          alt={user?.full_name || ""}
+          src={
+            user?.image
+              ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+              : defaultImage
+          }
+        />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user?.full_name || ""}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user?.role || ""}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -105,16 +121,34 @@ const HeaderUserbox = () => {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar
+            variant="rounded"
+            alt={user?.full_name || ""}
+            src={
+              user?.image
+                ? `${process.env.REACT_APP_MAILING_BACKEND}/${user?.image}`
+                : defaultImage
+            }
+          />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user?.full_name || ""}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user?.role || ""}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
-
+        <List sx={{ p: 1 }} component="nav">
+          <ListItem
+            button
+            to="/profile"
+            component={NavLink}
+            onClick={handleClose}
+          >
+            <AccountBoxTwoToneIcon fontSize="small" />
+            <ListItemText primary="My Profile" />
+          </ListItem>
+        </List>
         <Divider />
         <Box sx={{ m: 1 }}>
           <Button color="primary" fullWidth onClick={logoutUser}>
