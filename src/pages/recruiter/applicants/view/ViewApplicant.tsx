@@ -16,7 +16,7 @@ import {
 const ViewApplicant = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const data: IApplicant = location?.state;
+  const data = location?.state as IApplicant;
 
   return (
     <>

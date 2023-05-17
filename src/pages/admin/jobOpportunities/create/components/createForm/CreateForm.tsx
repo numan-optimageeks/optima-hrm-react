@@ -137,10 +137,14 @@ const CreateForm = () => {
         </StyledInput>
         <StyledInput>
           <CustomInput
+            select
             label="No of hiring"
             type={"text"}
             id="noOfHiring"
             placeholder="No of hiring"
+            SelectProps={{
+              native: true,
+            }}
             helperText={
               isError("noOfHiring", errors, touched)
                 ? isErrorMessage("noOfHiring", errors)
@@ -148,13 +152,14 @@ const CreateForm = () => {
             }
             error={isError("noOfHiring", errors, touched)}
             {...getFieldProps("noOfHiring")}
-            onChange={(e) => {
-              const regix = new RegExp("^[0-9]*$");
-              if (regix.test(e.target.value) || e.target.value === "") {
-                handleChange(e);
-              }
-            }}
-          />
+            onChange={handleChange}
+          >
+            {Array.from({ length: 10 }, (_, i) => i + 1)?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </CustomInput>
         </StyledInput>
       </StyledForm>
 

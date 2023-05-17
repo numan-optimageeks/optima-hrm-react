@@ -24,7 +24,10 @@ export const validations = Yup.object().shape({
   email: Yup.string().email().required("E-mail is required!"),
   openingDate: Yup.string().required("Date is required!"),
   position: Yup.string().required("Position is required!"),
-  noOfHiring: Yup.string().required("No of Hiring is required!"),
+  noOfHiring: Yup.string()
+    .required("No of Hiring is required!")
+    .matches(/[0-9]/, "Please enter a valid number")
+    .max(10),
   experiance: Yup.string().required("Experiance is required!"),
   designation: Yup.string().required("Designation is required!"),
   budget: Yup.string().required("Budget is required!"),

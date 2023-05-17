@@ -35,6 +35,9 @@ const Interviews = Loader(
 const Users = Loader(
   lazy(() => import("src/pages/settings/users/list/UsersList"))
 );
+const PositionsTracking = Loader(
+  lazy(() => import("src/pages/recruiter/positionsTacking/PositionsTracking"))
+);
 
 const LoginPage = Loader(lazy(() => import("src/pages/auth/login/Login")));
 const CreateDepartment = Loader(
@@ -230,6 +233,15 @@ const routes: RouteObject[] = [
               {
                 path: "edit",
                 element: <EditProfile />,
+              },
+            ],
+          },
+          {
+            path: "positions-tracking",
+            children: [
+              {
+                index: true,
+                element: <PositionsTracking />,
               },
             ],
           },

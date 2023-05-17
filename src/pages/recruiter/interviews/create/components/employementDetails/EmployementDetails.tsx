@@ -22,32 +22,43 @@ import { useToast } from "src/hooks/useToast";
 import { transformError } from "src/helpers/transformError";
 import Loader from "src/components/Loader/Loader";
 
-const EmployementDetails = () => {
+const EmploymentDetails = () => {
   const navigate = useNavigate();
   const AxiosClient = useAxios();
   const location = useLocation();
   const toast = useToast();
   //@ts-ignore
   const editState: ICreateInterview = location?.state?.interview;
+  //@ts-ignore
+  const applicant: any = location?.state?.candidate;
   const [details, setDetails] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [positions, setPositions] = useState([]);
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
+    applicantId: applicant.id,
   });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getEmployees = async () => {
+    const getEmployeesPositions = async () => {
       setLoading(true);
       try {
-        const res = await AxiosClient.post(`/employee/`);
-        setEmployees(res?.data?.data);
+        const res = await Promise.all([
+          AxiosClient.post(`/employee/`),
+          AxiosClient.post("/job-position/", { status: "open" }),
+        ]);
+        const employees = res[0]?.data?.data;
+        const positions = res[1]?.data?.data;
+        setEmployees(employees);
+        setPositions(positions);
       } catch (err) {
         toast.error(transformError(err)?.message);
       }
       setLoading(false);
     };
-    getEmployees();
+    getEmployeesPositions();
   }, []);
 
   useEffect(() => {
@@ -58,11 +69,11 @@ const EmployementDetails = () => {
     //@ts-ignore
     if (editState?.id) {
       const editValues = {
-        interviewerId: editState?.interviewerId || null,
+        interviewerId: editState?.interviewerId || undefined,
         interviewerName: editState?.interviewerName || "",
         status: editState?.status || "",
         interviewTimings: editState?.interviewTimings || getDate(),
-        appliedFor: editState?.appliedFor || "",
+        appliedFor: editState?.appliedFor || undefined,
         currentCompany: editState?.currentCompany || "",
         currentCompanyExperience: editState?.currentCompanyExperience || "",
         teamLeadExperience: editState?.teamLeadExperience || "",
@@ -72,12 +83,13 @@ const EmployementDetails = () => {
         currentSalary: editState?.currentSalary || "",
         expectedSalary: editState?.expectedSalary || "",
         noticePeriod: editState?.noticePeriod || "",
-
         hrScore: editState?.hrScore || "",
         technicalScore: editState?.technicalScore || "",
         hrRemarks: editState?.hrRemarks || "",
         interviewerRemarks: editState?.interviewerRemarks || "",
         recommendationStatus: editState?.recommendationStatus || "",
+        reasonOfLeaving: editState?.reasonOfLeaving || "",
+        teamHeadCount: editState?.teamHeadCount || 0,
       };
       setInitialValue(editValues);
     }
@@ -91,22 +103,23 @@ const EmployementDetails = () => {
         interviewerName: values?.interviewerName || "",
         status: values?.status || "",
         interviewTimings: values?.interviewTimings || "",
-        appliedFor: values?.appliedFor || "",
+        appliedFor: +values?.appliedFor || undefined,
         currentCompany: values?.currentCompany || "",
         currentCompanyExperience: values?.currentCompanyExperience || "",
         teamLeadExperience: values?.teamLeadExperience || "",
         totalExperience: values?.totalExperience || "",
-        // applicantId: values?.applicantId || "",
+        applicantId: values?.applicantId || "",
         companyContactPerson: values?.companyContactPerson || "",
         currentSalary: values?.currentSalary || "",
         expectedSalary: values?.expectedSalary || "",
         noticePeriod: values?.noticePeriod || "",
-
         hrScore: values?.hrScore || "",
         technicalScore: values?.technicalScore || "",
         hrRemarks: values?.hrRemarks || "",
         interviewerRemarks: values?.interviewerRemarks || "",
         recommendationStatus: values?.recommendationStatus || "",
+        reasonOfLeaving: values?.reasonOfLeaving || "",
+        teamHeadCount: values?.teamHeadCount || 0,
       };
       //@ts-ignore
       if (editState?.id) {
@@ -117,6 +130,7 @@ const EmployementDetails = () => {
       }
       navigate("/interviews");
     } catch (err) {
+      console.log(err);
       toast.error(transformError(err)?.message);
     }
     setLoading(false);
@@ -140,6 +154,7 @@ const EmployementDetails = () => {
     onSubmit: handleFormSubmit,
     enableReinitialize: true,
   });
+
   const getInterviewer = () => {
     const emp = employees?.map((item) => {
       return {
@@ -155,6 +170,7 @@ const EmployementDetails = () => {
       ...(emp || []),
     ];
   };
+
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
       {loading && <Loader />}
@@ -164,21 +180,21 @@ const EmployementDetails = () => {
           <CustomInput
             select
             label="Interviewer"
-            id="interviewerName"
+            id="interviewerId"
             placeholder="Interviewer"
             helperText={
-              isError("interviewerName", errors, touched)
-                ? isErrorMessage("interviewerName", errors)
+              isError("interviewerId", errors, touched)
+                ? isErrorMessage("interviewerId", errors)
                 : ""
             }
-            error={isError("interviewerName", errors, touched)}
-            {...getFieldProps("interviewerName")}
+            error={isError("interviewerId", errors, touched)}
+            {...getFieldProps("interviewerId")}
             SelectProps={{
               native: true,
             }}
             onChange={(e) => {
               const value = getInterviewer()?.find(
-                (val) => val?.value === e?.target?.value
+                (val) => val?.value === +e?.target?.value
               );
               setFieldValue("interviewerName", value?.label);
               setFieldValue("interviewerId", value?.value);
@@ -221,7 +237,7 @@ const EmployementDetails = () => {
         <StyledInput>
           <CustomInput
             label="Interview Time"
-            type={"datetime-local"}
+            type="datetime-local"
             id="interviewTimings"
             helperText={
               isError("interviewTimings", errors, touched)
@@ -234,6 +250,7 @@ const EmployementDetails = () => {
         </StyledInput>
         <StyledInput>
           <CustomInput
+            select
             label="Applied For"
             type={"text"}
             id="appliedFor"
@@ -245,7 +262,17 @@ const EmployementDetails = () => {
             }
             error={isError("appliedFor", errors, touched)}
             {...getFieldProps("appliedFor")}
-          />
+            SelectProps={{
+              native: true,
+            }}
+          >
+            <option value=""></option>
+            {positions?.map((position) => (
+              <option key={position.id} value={position.id}>
+                {position.position}
+              </option>
+            ))}
+          </CustomInput>
         </StyledInput>
       </StyledForm>
 
@@ -300,10 +327,10 @@ const EmployementDetails = () => {
         </StyledInput>
         <StyledInput>
           <CustomInput
-            label="TeamLead Experience"
+            label="Team Lead Experience"
             type={"text"}
             id="teamLeadExperience"
-            placeholder="TeamLead Experience"
+            placeholder="Team Lead Experience"
             helperText={
               isError("teamLeadExperience", errors, touched)
                 ? isErrorMessage("teamLeadExperience", errors)
@@ -316,6 +343,21 @@ const EmployementDetails = () => {
       </StyledForm>
 
       <StyledForm>
+        <StyledInput>
+          <CustomInput
+            label="Team Head Count"
+            type="text"
+            id="teamHeadCount"
+            placeholder="Team Head Count"
+            helperText={
+              isError("teamHeadCount", errors, touched)
+                ? isErrorMessage("teamHeadCount", errors)
+                : ""
+            }
+            error={isError("teamHeadCount", errors, touched)}
+            {...getFieldProps("teamHeadCount")}
+          />
+        </StyledInput>
         <StyledInput>
           <CustomInput
             label="Company Contact Person"
@@ -331,10 +373,12 @@ const EmployementDetails = () => {
             {...getFieldProps("companyContactPerson")}
           />
         </StyledInput>
+      </StyledForm>
+      <StyledForm>
         <StyledInput>
           <CustomInput
             label="Notice Period"
-            type={"text"}
+            type="text"
             id="noticePeriod"
             placeholder="Notice Period"
             helperText={
@@ -344,6 +388,21 @@ const EmployementDetails = () => {
             }
             error={isError("noticePeriod", errors, touched)}
             {...getFieldProps("noticePeriod")}
+          />
+        </StyledInput>
+        <StyledInput>
+          <CustomInput
+            label="Reason of Leaving"
+            type="text"
+            id="reasonOfLeaving"
+            placeholder="Reason of Leaving"
+            helperText={
+              isError("reasonOfLeaving", errors, touched)
+                ? isErrorMessage("reasonOfLeaving", errors)
+                : ""
+            }
+            error={isError("reasonOfLeaving", errors, touched)}
+            {...getFieldProps("reasonOfLeaving")}
           />
         </StyledInput>
       </StyledForm>
@@ -496,4 +555,4 @@ const EmployementDetails = () => {
     </form>
   );
 };
-export default EmployementDetails;
+export default EmploymentDetails;

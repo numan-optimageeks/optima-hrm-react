@@ -51,6 +51,11 @@ export const SideBarData = (iconColor) => {
           title: "Interviews",
           icon: <CalendarMonthIcon sx={iconColor} />,
         },
+        {
+          path: "/positions-tracking",
+          title: "Positions Tracking",
+          icon: <WorkIcon sx={iconColor} />,
+        },
       ],
     },
     {

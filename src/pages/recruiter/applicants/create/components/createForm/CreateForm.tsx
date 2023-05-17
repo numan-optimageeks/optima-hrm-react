@@ -25,7 +25,7 @@ const CreateForm = () => {
   const AxiosClient = useAxios();
   const toast = useToast();
   const location = useLocation();
-  const editState: IApplicant = location?.state;
+  const editState = location?.state as IApplicant;
   const [details, setDetails] = useState([]);
   const [initialValue, setInitialValue] = useState({
     ...initialValues(),
@@ -36,15 +36,18 @@ const CreateForm = () => {
     if (editState?.id) {
       const editValues = {
         address: editState?.address || "",
-        age: editState?.age || "",
+        age: editState?.age || undefined,
         city: editState?.city || "",
         cnic: editState?.cnic || "",
-        education: editState?.education || "",
         email: editState?.email || "",
         fullName: editState?.fullName || "",
         gender: editState?.gender || "",
         phoneNumber: editState?.phoneNumber || "",
         state: editState?.state || "",
+        linkedinHandle: editState?.linkedinHandle || "",
+        education: editState?.education || "",
+        graduationYear: editState?.graduationYear || "",
+        university: editState?.university || "",
       };
       setInitialValue(editValues);
     }
@@ -53,25 +56,14 @@ const CreateForm = () => {
   const handleFormSubmit = async (values: CreateApplicant) => {
     setLoading(true);
     try {
-      const payload = {
-        address: values?.address || "",
-        age: values?.age || "",
-        city: values?.city || "",
-        cnic: values?.cnic || "",
-        education: values?.education || "",
-        email: values?.email || "",
-        fullName: values?.fullName || "",
-        gender: values?.gender || "",
-        phoneNumber: values?.phoneNumber || "",
-        state: values?.state || "",
-      };
       if (editState?.id) {
-        await AxiosClient.put(`/applicant/update/${editState?.id}`, payload);
+        await AxiosClient.put(`/applicant/update/${editState?.id}`, values);
       } else {
-        await AxiosClient.post(`/applicant/create`, payload);
+        await AxiosClient.post(`/applicant/create`, values);
       }
       navigate("/applicants");
     } catch (err) {
+      console.log(err);
       toast.error(transformError(err)?.message);
     }
     setLoading(false);
@@ -119,10 +111,10 @@ const CreateForm = () => {
       <StyledForm>
         <StyledInput>
           <CustomInput
-            label="Name"
+            label="Full Name"
             type={"text"}
             id="fullName"
-            placeholder="Name"
+            placeholder="Full Name"
             helperText={
               isError("fullName", errors, touched)
                 ? isErrorMessage("fullName", errors)
@@ -260,7 +252,53 @@ const CreateForm = () => {
           {...getFieldProps("education")}
         />
       </StyledForm>
-
+      <StyledForm>
+        <CustomInput
+          label="University"
+          type={"text"}
+          id="university"
+          placeholder="University"
+          helperText={
+            isError("university", errors, touched)
+              ? isErrorMessage("university", errors)
+              : ""
+          }
+          error={isError("university", errors, touched)}
+          {...getFieldProps("university")}
+        />
+      </StyledForm>
+      <StyledForm>
+        <StyledInput>
+          <CustomInput
+            label="Graduation Year"
+            type={"text"}
+            id="graduationYear"
+            placeholder="Graduation Year"
+            helperText={
+              isError("graduationYear", errors, touched)
+                ? isErrorMessage("graduationYear", errors)
+                : ""
+            }
+            error={isError("graduationYear", errors, touched)}
+            {...getFieldProps("graduationYear")}
+          />
+        </StyledInput>
+        <StyledInput>
+          <CustomInput
+            label="LinkedIn"
+            type={"text"}
+            id="linkedinHandle"
+            placeholder="LinkedIn"
+            helperText={
+              isError("linkedinHandle", errors, touched)
+                ? isErrorMessage("linkedinHandle", errors)
+                : ""
+            }
+            error={isError("linkedinHandle", errors, touched)}
+            {...getFieldProps("linkedinHandle")}
+          />
+        </StyledInput>
+      </StyledForm>
       <StyledForm>
         <StyledInput>
           <CustomInput

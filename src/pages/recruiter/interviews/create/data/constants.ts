@@ -12,6 +12,14 @@ export const InterviewTypes = [
     value: "InterviewDone",
   },
   {
+    label: "ShortListed",
+    value: "ShortListed",
+  },
+  {
+    label: "Selected",
+    value: "Selected",
+  },
+  {
     label: "Pending",
     value: "Pending",
   },

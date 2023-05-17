@@ -17,5 +17,6 @@ export const transformJobFieldValues = (editState) => {
     technicalSpecification: editState?.technicalSpecification || "",
     otherRequirements: editState?.otherRequirements || "",
     requestedBy: editState?.requestedBy || "",
+    status: editState?.status || "",
   };
 };

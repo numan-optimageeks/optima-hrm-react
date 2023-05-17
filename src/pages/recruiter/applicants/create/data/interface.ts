@@ -1,20 +1,23 @@
 export interface IApplicant {
+  id?: number;
   address?: string;
-  age?: string;
-  city?: string;
-  cnic?: string;
+  age: number | undefined;
+  university: string;
+  city: string;
+  cnic: string;
   createdAt?: string;
   createdBy?: string;
-  education?: string;
-  email?: string;
-  fullName?: string;
-  gender?: string;
-  id?: number;
+  email: string;
+  fullName: string;
+  gender: string;
+  linkedinHandle?: string;
+  education: string;
   interviewDetails?: Object[];
   interviewerName?: string;
   isDeleted?: boolean;
-  phoneNumber?: string;
-  state?: string;
+  phoneNumber: string;
+  graduationYear: string;
+  state: string;
   updatedAt?: string;
   updatedBy?: string;
 }

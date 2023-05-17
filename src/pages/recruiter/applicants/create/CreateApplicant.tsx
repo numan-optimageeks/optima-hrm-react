@@ -14,7 +14,7 @@ import {
 const CreateApplicant = () => {
   const location = useLocation();
 
-  const editState: IApplicant = location?.state;
+  const editState: IApplicant = location?.state as IApplicant;
   return (
     <>
       <Helmet title={editState?.id ? "Edit Applicant" : "Create Applicant"} />
